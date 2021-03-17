@@ -14,7 +14,7 @@
 
 
  ## API WIKI 
-- [API 문서](https://github.com/Yboyu0u/WhereYouAt_API/wikiI)
+- [API 문서](https://github.com/Yboyu0u/WhereYouAt_API/wiki)
 
 
 <!-- ![임시 ERD](./img/ERD.png) -->
