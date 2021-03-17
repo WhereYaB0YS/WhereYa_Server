@@ -14,9 +14,9 @@
 
 
  ## API WIKI 
-- [API 문서](https://github.com/Yboyu0u/WhereYouAt_API/wiki/%EC%96%B4%EB%94%94%EC%95%BC-Server-WIKI)
+- [API 문서](https://github.com/Yboyu0u/WhereYouAt_API/wikiI)
 
-## ERD
+
 <!-- ![임시 ERD](./img/ERD.png) -->
 
 ## Dependency
