@@ -1,5 +1,7 @@
 package com.where.WhereYouAt.controller;
 
+import com.where.WhereYouAt.controller.dto.CheckNicknameDto;
+import com.where.WhereYouAt.controller.dto.CheckUserIdDto;
 import com.where.WhereYouAt.controller.dto.UserDto;
 import com.where.WhereYouAt.domain.User;
 import com.where.WhereYouAt.message.ResponseMessage;
@@ -33,6 +35,24 @@ public class UserController{
     public User getUser(@PathVariable Long id){
         return userService.getUser(id);
     }
+
+    //아이디 중복 확인
+    @PostMapping("/check/userId")
+    public ResponseEntity<ResponseMessage> checkUserId(@RequestBody CheckUserIdDto dto){
+        userService.checkUserId(dto.getUserId());
+
+        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
+    }
+
+
+    //닉네임 중복 확인
+    @PostMapping("/check/nickname")
+    public ResponseEntity<ResponseMessage> checkNickname(@RequestBody CheckNicknameDto dto){
+        userService.checkNickname(dto.getNickname());
+
+        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
+    }
+
 
     //회원가입
     @PostMapping
@@ -76,16 +96,16 @@ public class UserController{
 //        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
 //    }
 //
-//    //회원탈퇴
-//    @DeleteMapping("/delete")
-//    public ResponseEntity<ResponseMessage> deleteUser(Authentication authentication){
-//        Claims claims = (Claims) authentication.getPrincipal();
-//        Long userId = claims.get("userId",Long.class);
-//
-//        userService.deleteUser(userId);
-//
-//        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
-//    }
+    //회원탈퇴
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResponseMessage> deleteUser(Authentication authentication){
+        Claims claims = (Claims) authentication.getPrincipal();
+        Long userId = claims.get("userId",Long.class);
+
+        userService.deleteUser(userId);
+
+        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
+    }
 
 }
 

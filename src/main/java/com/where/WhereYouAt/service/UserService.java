@@ -5,6 +5,8 @@ import com.where.WhereYouAt.domain.User;
 import com.where.WhereYouAt.domain.dto.Birthday;
 import com.where.WhereYouAt.exception.AlreadyExistedNicknameException;
 import com.where.WhereYouAt.exception.AlreadyExistedUserIdException;
+import com.where.WhereYouAt.exception.NotExistedUserIdException;
+import com.where.WhereYouAt.exception.PasswordWrongException;
 import com.where.WhereYouAt.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +58,41 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    //회원 탈퇴
+    public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(NotExistedUserIdException::new);
 
+        userRepository.delete(user);
+    }
+
+    //로그인 인증
+    public User authentication(String userId, String password) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(NotExistedUserIdException::new);
+
+        if(!passwordEncoder.matches(password,user.getPassword())){
+            throw  new PasswordWrongException();
+        }
+
+        return user;
+    }
+
+    //아이디 중복 확인
+    public void checkUserId(String userId) {
+        Optional<User> user = userRepository.findByUserId(userId);
+
+        if(user.isPresent()){
+            throw new AlreadyExistedUserIdException();
+        }
+    }
+
+    //닉네임 중복 확인
+    public void checkNickname(String nickname){
+        Optional<User> user = userRepository.findByNickname(nickname);
+
+        if(user.isPresent()){
+            throw new AlreadyExistedUserIdException();
+        }
+    }
 }
