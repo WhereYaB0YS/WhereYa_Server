@@ -1,5 +1,6 @@
 package com.where.WhereYouAt.service;
 
+import com.where.WhereYouAt.controller.dto.ModUserDto;
 import com.where.WhereYouAt.controller.dto.UserDto;
 import com.where.WhereYouAt.domain.User;
 import com.where.WhereYouAt.domain.dto.Birthday;
@@ -30,6 +31,14 @@ public class UserService {
     public User getUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("계정이 존재하지 않습니다"));
+        return user;
+    }
+
+    //내정보 조회
+    public User getMyinfo(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(NotExistedUserIdException::new);
+
         return user;
     }
 
@@ -94,5 +103,13 @@ public class UserService {
         if(user.isPresent()){
             throw new AlreadyExistedUserIdException();
         }
+    }
+
+    // 프로필 수정
+    public void modifyUser(Long userId, String nickname) {
+        User user = userRepository.findByNickname(nickname)
+                .orElseThrow(AlreadyExistedNicknameException::new);
+
+        user.setNickname(nickname);
     }
 }

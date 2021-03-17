@@ -1,8 +1,6 @@
 package com.where.WhereYouAt.controller;
 
-import com.where.WhereYouAt.controller.dto.CheckNicknameDto;
-import com.where.WhereYouAt.controller.dto.CheckUserIdDto;
-import com.where.WhereYouAt.controller.dto.UserDto;
+import com.where.WhereYouAt.controller.dto.*;
 import com.where.WhereYouAt.domain.User;
 import com.where.WhereYouAt.message.ResponseMessage;
 import com.where.WhereYouAt.repository.UserRepository;
@@ -36,6 +34,23 @@ public class UserController{
         return userService.getUser(id);
     }
 
+    //내 정보 조회
+    @GetMapping
+    public ResponseEntity<MyInfoResponseDto>getMyInfo(Authentication authentication){
+        Claims claims = (Claims)authentication.getPrincipal();
+        Long id = claims.get("userId",Long.class);
+
+        User user = userService.getMyinfo(id);
+
+        MyInfoResponseDto responseDto = MyInfoResponseDto.builder()
+                .id(user.getId())
+                .userId(user.getUserId())
+                .nickname(user.getNickname())
+                .build();
+
+       return ResponseEntity.ok(responseDto);
+    }
+
     //아이디 중복 확인
     @PostMapping("/check/userId")
     public ResponseEntity<ResponseMessage> checkUserId(@RequestBody CheckUserIdDto dto){
@@ -43,7 +58,6 @@ public class UserController{
 
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
     }
-
 
     //닉네임 중복 확인
     @PostMapping("/check/nickname")
@@ -63,16 +77,16 @@ public class UserController{
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
     }
 
-//    //프로필 수정
-//    @PatchMapping("/patch")
-//    public ResponseEntity<ResponseMessage> modifyUser(Authentication authentication, @RequestBody ModUserDto userDto){
-//        Claims claims = (Claims) authentication.getPrincipal();
-//        Long userId = claims.get("userId",Long.class);
-//
-//        userService.modifyPerson(userId,userDto);
-//
-//        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
-//    }
+    //프로필 수정
+    @PatchMapping
+    public ResponseEntity<ResponseMessage> modifyUser(Authentication authentication, @RequestBody ModUserDto userDto){
+        Claims claims = (Claims) authentication.getPrincipal();
+        Long userId = claims.get("userId",Long.class);
+
+        userService.modifyUser(userId,userDto.getNickname());
+
+        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
+    }
 //
 //    //프로필 이미지 업로드
 //    @PostMapping("/upload/img")
