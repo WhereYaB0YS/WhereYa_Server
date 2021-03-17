@@ -87,15 +87,15 @@ public class UserController{
 
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
     }
-//
-//    //프로필 이미지 업로드
-//    @PostMapping("/upload/img")
-//    public ResponseEntity<ResponseMessage> uploadImg(Authentication authentication, @RequestParam("data") MultipartFile file) throws IOException {
-//        Claims claims = (Claims) authentication.getPrincipal();
-//        Long userId = claims.get("userId",Long.class);
-//        userService.uploadImg(userId,file);
-//        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
-//    }
+
+    //프로필 이미지 업로드
+    @PutMapping("/upload/img")
+    public ResponseEntity<ResponseMessage> uploadImg(Authentication authentication, @RequestParam("data") MultipartFile file) throws IOException {
+        Claims claims = (Claims) authentication.getPrincipal();
+        Long userId = claims.get("userId",Long.class);
+        userService.uploadImg(userId,file);
+        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
+    }
 //
 //    //프로필 기본 이미지로 업로드
 //    @PostMapping("/upload/baseImg")

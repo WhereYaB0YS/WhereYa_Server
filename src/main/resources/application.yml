@@ -8,3 +8,15 @@ jwt:
   secret: 12345678901234567890123456789012
 
 
+cloud:
+  aws:
+    s3:
+      bucket: gogoeverybodyy
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    credentials:
+      instanceProfile: true # AWS CLI에서 aws configure list 정보를 반영할건지 여부
+      accessKey: AKIAWZMLK2OGUXD2YHWK
+      secretKey: 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

@@ -4,6 +4,7 @@ import com.where.WhereYouAt.controller.dto.ModUserDto;
 import com.where.WhereYouAt.controller.dto.UserDto;
 import com.where.WhereYouAt.domain.User;
 import com.where.WhereYouAt.domain.dto.Birthday;
+import com.where.WhereYouAt.domain.utils.Uploader;
 import com.where.WhereYouAt.exception.AlreadyExistedNicknameException;
 import com.where.WhereYouAt.exception.AlreadyExistedUserIdException;
 import com.where.WhereYouAt.exception.NotExistedUserIdException;
@@ -14,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -26,6 +29,9 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private Uploader uploader;
 
     //회원 조회
     public User getUser(Long id) {
@@ -105,11 +111,19 @@ public class UserService {
         }
     }
 
-    // 프로필 수정
+    //프로필 수정
     public void modifyUser(Long userId, String nickname) {
         User user = userRepository.findByNickname(nickname)
                 .orElseThrow(AlreadyExistedNicknameException::new);
 
         user.setNickname(nickname);
+    }
+
+    //프로필 이미지 업로드
+    public void uploadImg(Long userId, MultipartFile file) throws IOException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(NotExistedUserIdException::new);
+
+        user.setProfileImg(uploader.upload(file,"static"));
     }
 }
