@@ -9,4 +9,6 @@ import lombok.Getter;
 public class LoginResponseDto {
 
     private String jwt;
+
+    private String nickname;
 }

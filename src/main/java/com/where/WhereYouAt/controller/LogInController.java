@@ -33,7 +33,7 @@ public class LogInController {
 
         String jwt = jwtUtil.createToken(user.getId(),user.getNickname());
 
-        LoginResponseDto responseDto = LoginResponseDto.builder().jwt(jwt).build();
+        LoginResponseDto responseDto = LoginResponseDto.builder().jwt(jwt).nickname(user.getNickname()).build();
 
         String url = "/user/login";
         return ResponseEntity.created(new URI(url))

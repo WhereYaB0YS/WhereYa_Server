@@ -5,10 +5,7 @@ import com.where.WhereYouAt.controller.dto.UserDto;
 import com.where.WhereYouAt.domain.User;
 import com.where.WhereYouAt.domain.dto.Birthday;
 import com.where.WhereYouAt.domain.utils.Uploader;
-import com.where.WhereYouAt.exception.AlreadyExistedNicknameException;
-import com.where.WhereYouAt.exception.AlreadyExistedUserIdException;
-import com.where.WhereYouAt.exception.NotExistedUserIdException;
-import com.where.WhereYouAt.exception.PasswordWrongException;
+import com.where.WhereYouAt.exception.*;
 import com.where.WhereYouAt.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +37,7 @@ public class UserService {
         return user;
     }
 
-    //내정보 조회
+    //프로필 이미지 조회
     public User getMyinfo(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(NotExistedUserIdException::new);
@@ -123,6 +120,10 @@ public class UserService {
     public void uploadImg(Long userId, MultipartFile file) throws IOException {
         User user = userRepository.findById(userId)
                 .orElseThrow(NotExistedUserIdException::new);
+
+        if(file.isEmpty()){
+            throw new InCorrectInformationException();
+        }
 
         user.setProfileImg(uploader.upload(file,"static"));
     }

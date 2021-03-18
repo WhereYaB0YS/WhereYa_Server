@@ -34,7 +34,7 @@ public class UserController{
         return userService.getUser(id);
     }
 
-    //내 정보 조회
+    //프로필 이미지 조회
     @GetMapping
     public ResponseEntity<MyInfoResponseDto>getMyInfo(Authentication authentication){
         Claims claims = (Claims)authentication.getPrincipal();
@@ -43,9 +43,7 @@ public class UserController{
         User user = userService.getMyinfo(id);
 
         MyInfoResponseDto responseDto = MyInfoResponseDto.builder()
-                .id(user.getId())
-                .userId(user.getUserId())
-                .nickname(user.getNickname())
+                .profileImg(user.getProfileImg())
                 .build();
 
        return ResponseEntity.ok(responseDto);

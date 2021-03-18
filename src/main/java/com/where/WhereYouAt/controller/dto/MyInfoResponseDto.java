@@ -7,8 +7,6 @@ import lombok.Data;
 @Builder
 public class MyInfoResponseDto {
 
-    private Long id;
-    private String userId;
-    private String nickname;
+   private String profileImg;
 
 }
