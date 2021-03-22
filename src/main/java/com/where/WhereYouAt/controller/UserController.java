@@ -36,13 +36,13 @@ public class UserController{
 
     //프로필 이미지 조회
     @GetMapping
-    public ResponseEntity<MyInfoResponseDto>getMyInfo(Authentication authentication){
+    public ResponseEntity<ProfileImgDto>getMyInfo(Authentication authentication){
         Claims claims = (Claims)authentication.getPrincipal();
         Long id = claims.get("userId",Long.class);
 
         User user = userService.getMyinfo(id);
 
-        MyInfoResponseDto responseDto = MyInfoResponseDto.builder()
+        ProfileImgDto responseDto = ProfileImgDto.builder()
                 .profileImg(user.getProfileImg())
                 .build();
 
@@ -88,26 +88,13 @@ public class UserController{
 
     //프로필 이미지 업로드
     @PutMapping("/upload/img")
-    public ResponseEntity<ResponseMessage> uploadImg(Authentication authentication, @RequestParam("data") MultipartFile file) throws IOException {
+    public ResponseEntity<ProfileImgDto> uploadImg(Authentication authentication, @RequestParam("data") MultipartFile file) throws IOException {
         Claims claims = (Claims) authentication.getPrincipal();
         Long userId = claims.get("userId",Long.class);
-        userService.uploadImg(userId,file);
-        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
+        String img = userService.uploadImg(userId,file);
+        return ResponseEntity.ok(ProfileImgDto.builder().profileImg(img).build());
     }
-//
-//    //프로필 기본 이미지로 업로드
-//    @PostMapping("/upload/baseImg")
-//    public ResponseEntity<ResponseMessage> uploadBaseImg(Authentication authentication){
-//        Claims claims = (Claims) authentication.getPrincipal();
-//        Long userId = claims.get("userId",Long.class);
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(NotExistedUserIdException::new);
-//
-//        user.setProfileImg("https://gogoeverybodyy.s3.ap-northeast-2.amazonaws.com/static/gogo.profile.png");
-//
-//        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
-//    }
-//
+
     //회원탈퇴
     @DeleteMapping("/delete")
     public ResponseEntity<ResponseMessage> deleteUser(Authentication authentication){

@@ -18,7 +18,7 @@ import java.io.IOException;
 @Component // 빈 등록을 위한 어노테이션
 public class S3Uploader implements Uploader {
 
-    private final static String TEMP_FILE_PATH = "src/main/resources/";
+    //private final static String TEMP_FILE_PATH = "src/main/resources/";
 
     private final AmazonS3Client amazonS3Client;
 
@@ -52,7 +52,7 @@ public class S3Uploader implements Uploader {
 
 
     public File convert(MultipartFile file) throws IOException{
-        File convertFile = new File(TEMP_FILE_PATH + file.getOriginalFilename());
+        File convertFile = new File(/*TEMP_FILE_PATH +*/ file.getOriginalFilename());
         if(convertFile.createNewFile()){
             try(FileOutputStream fos = new FileOutputStream(convertFile)){
                 fos.write(file.getBytes());

@@ -117,7 +117,7 @@ public class UserService {
     }
 
     //프로필 이미지 업로드
-    public void uploadImg(Long userId, MultipartFile file) throws IOException {
+    public String uploadImg(Long userId, MultipartFile file) throws IOException {
         User user = userRepository.findById(userId)
                 .orElseThrow(NotExistedUserIdException::new);
 
@@ -126,5 +126,8 @@ public class UserService {
         }
 
         user.setProfileImg(uploader.upload(file,"static"));
+        return uploader.upload(file,"static");
     }
+
+
 }

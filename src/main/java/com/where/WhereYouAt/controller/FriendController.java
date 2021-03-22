@@ -1,0 +1,82 @@
+package com.where.WhereYouAt.controller;
+
+
+import com.where.WhereYouAt.controller.dto.FriendsResponseDto;
+import com.where.WhereYouAt.message.ResponseMessage;
+import com.where.WhereYouAt.repository.UserRepository;
+import com.where.WhereYouAt.service.FriendService;
+import io.jsonwebtoken.Claims;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+
+@RequestMapping(value = "/friend")
+@RestController
+public class FriendController {
+
+    @Autowired
+    private FriendService friendService;
+
+    @Autowired
+    private UserRepository userRepositoy;
+
+    //친구추가
+    @PostMapping("/{friendNickname}")
+    public ResponseEntity<ResponseMessage> addFriend(Authentication authentication, @PathVariable String friendNickname){
+        Claims claims = (Claims) authentication.getPrincipal();
+        Long userId = claims.get("userId",Long.class);
+
+        friendService.addFriend(userId,friendNickname);
+
+        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
+
+    }
+
+    //친구목록 보기
+    @GetMapping
+    public ResponseEntity<ArrayList<FriendsResponseDto>> getFriends(Authentication authentication){
+        Claims claims = (Claims) authentication.getPrincipal();
+        Long userId = claims.get("userId",Long.class);
+
+        return ResponseEntity.ok(friendService.getFriends(userId));
+    }
+
+    //친구삭제
+    @DeleteMapping("/{friendNickname}")
+    public ResponseEntity<ResponseMessage> deleteFriend(Authentication authentication,@PathVariable String friendNickname){
+        Claims claims = (Claims) authentication.getPrincipal();
+        Long userId = claims.get("userId",Long.class);
+
+        friendService.deleteFriend(userId,friendNickname);
+
+        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
+    }
+
+    //즐겨찾기
+    @PostMapping("/bookmark/{friendNickname}")
+    public ResponseEntity<ResponseMessage> addStar(Authentication authentication, @PathVariable String friendNickname){
+        Claims claims = (Claims) authentication.getPrincipal();
+        Long userId = claims.get("userId",Long.class);
+
+        friendService.bookmark(userId,friendNickname);
+
+        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
+
+    }
+
+//    //즐겨찾기 삭제
+//    @DeleteMapping("/star/{friendNickname")
+//    public ResponseEntity<ResponseMessage> deleteStar(Authentication authentication, @PathVariable String friendNickname) {
+//        Claims claims = (Claims) authentication.getPrincipal();
+//        Long userId = claims.get("userId",Long.class);
+//
+//        friendService.deleteStar(userId,friendNickname);
+//
+//        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
+//    }
+
+}
