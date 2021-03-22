@@ -32,7 +32,7 @@ public class FriendController {
 
         friendService.addFriend(userId,friendNickname);
 
-        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
+        return ResponseEntity.ok(new ResponseMessage(HttpStatus.CREATED,"ok"));
 
     }
 
@@ -62,21 +62,9 @@ public class FriendController {
         Claims claims = (Claims) authentication.getPrincipal();
         Long userId = claims.get("userId",Long.class);
 
-        friendService.bookmark(userId,friendNickname);
+        String message = friendService.bookmark(userId,friendNickname);
 
-        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
+        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,message));
 
     }
-
-//    //즐겨찾기 삭제
-//    @DeleteMapping("/star/{friendNickname")
-//    public ResponseEntity<ResponseMessage> deleteStar(Authentication authentication, @PathVariable String friendNickname) {
-//        Claims claims = (Claims) authentication.getPrincipal();
-//        Long userId = claims.get("userId",Long.class);
-//
-//        friendService.deleteStar(userId,friendNickname);
-//
-//        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
-//    }
-
 }

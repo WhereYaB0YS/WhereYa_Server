@@ -3,6 +3,7 @@ package com.where.WhereYouAt.service;
 import com.where.WhereYouAt.controller.dto.FriendsResponseDto;
 import com.where.WhereYouAt.domain.Friend;
 import com.where.WhereYouAt.domain.User;
+import com.where.WhereYouAt.exception.AlreadyExistedFriendException;
 import com.where.WhereYouAt.exception.NotExistedFriendException;
 import com.where.WhereYouAt.exception.NotExistedUserIdException;
 import com.where.WhereYouAt.repository.FriendRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Properties;
 
 @Service
@@ -35,6 +37,11 @@ public class FriendService {
         }
 
         //TODO: 이미 등록된 친구 error
+        Optional<Friend> friendRel = friendRepository.findByUserIdAndUserId1(userId,friend.getId());
+
+        if(friendRel.isPresent()){
+            throw  new AlreadyExistedFriendException();
+        }
 
         User user = userRepository.findById(userId)
                 .orElseThrow(NotExistedUserIdException::new);
@@ -86,7 +93,7 @@ public class FriendService {
     }
 
     //즐겨찾기
-    public void bookmark(Long userId, String friendNickname) {
+    public String bookmark(Long userId, String friendNickname) {
 
         User friend = userRepository.findByNickname(friendNickname)
                 .orElseThrow(NotExistedUserIdException::new);
@@ -96,8 +103,10 @@ public class FriendService {
 
         if(friendRel.isStar()==true){
             friendRel.setStar(false);
+            return "해당 친구가 즐겨찾기목록에 추가되었습니디";
         }else{
             friendRel.setStar(true);
+            return "해당 친구가 즐겨찾기목록에서 제외되었습니다";
         }
     }
 

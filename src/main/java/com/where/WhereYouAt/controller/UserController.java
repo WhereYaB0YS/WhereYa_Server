@@ -72,7 +72,7 @@ public class UserController{
     public ResponseEntity<ResponseMessage> createUser(@RequestBody @Valid UserDto userDto){
         userService.createUser(userDto);
 
-        return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
+        return ResponseEntity.ok(new ResponseMessage(HttpStatus.CREATED,"ok"));
     }
 
     //프로필 수정
