@@ -59,4 +59,8 @@ public class User {
     @JsonManagedReference
     private List<Friend> friends;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @JsonManagedReference
+    private List<Appointment> appointmentList;
+
 }

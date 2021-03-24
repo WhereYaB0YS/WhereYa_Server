@@ -1,6 +1,7 @@
 package com.where.WhereYouAt.controller;
 
 
+import com.where.WhereYouAt.controller.dto.FriendsListResponseDto;
 import com.where.WhereYouAt.controller.dto.FriendsResponseDto;
 import com.where.WhereYouAt.message.ResponseMessage;
 import com.where.WhereYouAt.repository.UserRepository;
@@ -38,11 +39,15 @@ public class FriendController {
 
     //친구목록 보기
     @GetMapping
-    public ResponseEntity<ArrayList<FriendsResponseDto>> getFriends(Authentication authentication){
+    public ResponseEntity<FriendsListResponseDto> getFriends(Authentication authentication){
         Claims claims = (Claims) authentication.getPrincipal();
         Long userId = claims.get("userId",Long.class);
 
-        return ResponseEntity.ok(friendService.getFriends(userId));
+        FriendsListResponseDto dto = FriendsListResponseDto.builder()
+                .friends(friendService.getFriends(userId))
+                .build();
+
+        return ResponseEntity.ok(dto);
     }
 
     //친구삭제
