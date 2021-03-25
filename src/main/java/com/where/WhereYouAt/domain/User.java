@@ -61,6 +61,5 @@ public class User {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
-    private List<Appointment> appointmentList;
-
+    private List<AppointmentManager> appointmentList;
 }

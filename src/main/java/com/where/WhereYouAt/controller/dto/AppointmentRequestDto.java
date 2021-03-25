@@ -5,13 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AppointmentDto {
+public class AppointmentRequestDto {
 
     private String name;
 
@@ -19,7 +20,7 @@ public class AppointmentDto {
 
     private LocalDateTime date;
 
-    private String des;
+    private String destination;
 
     private String friends;
 }
