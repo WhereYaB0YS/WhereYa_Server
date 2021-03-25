@@ -46,8 +46,19 @@ public class AppointmentController {
 
         return ResponseEntity.ok(list);
     }
+
     //약속수정
-    //TODO: 
+    @PatchMapping("/{appointmentId}")
+    public ResponseEntity<ResponseMessage> editAppointment(Authentication authentication, @PathVariable Long appointmentId, @RequestBody AppointmentRequestDto dto){
+
+        Claims claims = (Claims) authentication.getPrincipal();
+        Long userId = claims.get("userId",Long.class);
+
+        appointmentService.editAppointment(userId,appointmentId,dto);
+
+
+        return ResponseEntity.ok(new ResponseMessage(HttpStatus.CREATED,"ok"));
+    }
 
     //약속삭제
     @DeleteMapping("/{appointmentId}")

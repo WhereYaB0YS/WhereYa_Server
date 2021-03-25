@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
 
-    Optional<Appointment> findByUserIdAndId(Long userId, Long appointmentId);
+
 }
