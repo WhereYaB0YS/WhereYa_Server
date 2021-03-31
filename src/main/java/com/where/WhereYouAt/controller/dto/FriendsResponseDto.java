@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class FriendsResponseDto {
+public class FriendsResponseDto implements Comparable<FriendsResponseDto> {
 
     private String profileImg;
 
@@ -13,4 +13,8 @@ public class FriendsResponseDto {
 
     private boolean star;
 
+    @Override
+    public int compareTo(FriendsResponseDto o) {
+        return nickname.compareTo(o.nickname);
+    }
 }

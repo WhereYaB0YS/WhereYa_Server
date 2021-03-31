@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 
 @Service
 @Transactional
@@ -62,6 +60,7 @@ public class FriendService {
         User user = userRepository.findById(userId)
                 .orElseThrow(NotExistedUserIdException::new);
 
+
         ArrayList<FriendsResponseDto> friends = new ArrayList<>();
 
         ArrayList<Friend> friendRelations = friendRepository.findByUserId(userId);
@@ -76,7 +75,8 @@ public class FriendService {
                     .build();
             friends.add(dto);
         }
-        return friends;
+        Collections.sort(friends);
+        return friends ;
     }
 
     //친구삭제
@@ -109,5 +109,7 @@ public class FriendService {
             return "해당 친구가 즐겨찾기목록에서 제외되었습니다";
         }
     }
+
+
 
 }
