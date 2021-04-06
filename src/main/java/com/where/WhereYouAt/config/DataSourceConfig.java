@@ -10,9 +10,9 @@ import javax.sql.DataSource;
 public class DataSourceConfig {
     @Bean
     public DataSource dataSource(){
-        String username = "wyaboy";
-        String password = "*#wyaboy";
-        String url = "jdbc:mysql://wyadb.cplrxb3kh41a.ap-northeast-2.rds.amazonaws.com:3306/wyaDB?characterEncoding=utf8";
+        String username = "whereboy"; //
+        String password = "where1234"; //
+        String url = "jdbc:mysql://wheredatabase.cplrxb3kh41a.ap-northeast-2.rds.amazonaws.com:3306/wyaDB?characterEncoding=utf8";
         String driverClass = "com.mysql.jdbc.Driver";
 
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();

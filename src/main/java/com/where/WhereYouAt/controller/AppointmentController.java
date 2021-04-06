@@ -30,7 +30,17 @@ public class AppointmentController {
         appointmentService.addAppointmet(userId,dto);
 
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.CREATED,"ok"));
+    }
+    //약속 상세정보 조회
+    @GetMapping("{/appointmentId}")
+    public ResponseEntity<AppointmentResponseDto> getDetailedAppointment(Authentication authentication,@PathVariable Long appointmentId){
 
+        Claims claims = (Claims) authentication.getPrincipal();
+        Long userId = claims.get("userId",Long.class);
+
+        AppointmentResponseDto dto = appointmentService.getDetailedAppointment(userId,appointmentId);
+
+        return  ResponseEntity.ok(dto);
     }
 
     //약속목록 조회
@@ -55,7 +65,6 @@ public class AppointmentController {
         Long userId = claims.get("userId",Long.class);
 
         appointmentService.editAppointment(userId,appointmentId,dto);
-
 
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.CREATED,"ok"));
     }

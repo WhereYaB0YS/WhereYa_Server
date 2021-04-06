@@ -70,6 +70,5 @@ public class FriendController {
         String message = friendService.bookmark(userId,friendNickname);
 
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,message));
-
     }
 }

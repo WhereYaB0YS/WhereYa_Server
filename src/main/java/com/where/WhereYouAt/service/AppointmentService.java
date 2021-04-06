@@ -68,7 +68,7 @@ public class AppointmentService {
         }
     }
 
-    // 약속목록 조회
+    //약속목록 조회
     public List<AppointmentResponseDto> getAppointments(Long userId) {
 
         User user = userRepository.findById(userId)
@@ -128,6 +128,37 @@ public class AppointmentService {
 
     }
 
+    //약속 상세정보 조회
+    public AppointmentResponseDto getDetailedAppointment(Long userId, Long appointmentId) {
 
+        AppointmentManager appointmentRel = appointmentManagerRepository.findByUserIdAndAppointmentId(userId,appointmentId)
+                .orElseThrow(NotExistedAppointmentException::new);
+
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(NotExistedAppointmentException::new);
+
+        List<AppointmentFriendDto> friends = new ArrayList<>();
+
+        for(AppointmentManager appointmentRel2: appointment.getAppointmentList()){
+            User friend = appointmentRel2.getUser();
+            if(userId != friend.getId()){
+                friends.add(AppointmentFriendDto.builder()
+                        .nickname(friend.getNickname())
+                        .profileImg(friend.getProfileImg())
+                        .build());
+            }
+        }
+
+        return AppointmentResponseDto.builder()
+                .id(appointment.getId())
+                .name(appointment.getName())
+                .memo(appointment.getMemo())
+                .date(appointment.getDate())
+                .destination(appointment.getDestination())
+                .friends(friends)
+                .build();
+
+
+    }
 }
 

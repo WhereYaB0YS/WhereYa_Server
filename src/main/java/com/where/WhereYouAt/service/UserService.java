@@ -84,7 +84,7 @@ public class UserService {
                 .orElseThrow(NotExistedUserIdException::new);
 
         if(!passwordEncoder.matches(password,user.getPassword())){
-            throw  new PasswordWrongException();
+            throw new PasswordWrongException();
         }
 
         return user;
@@ -128,6 +128,4 @@ public class UserService {
         user.setProfileImg(uploader.upload(file,"static"));
         return uploader.upload(file,"static");
     }
-
-
 }
