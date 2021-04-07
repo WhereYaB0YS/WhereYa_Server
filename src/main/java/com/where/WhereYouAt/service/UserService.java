@@ -1,7 +1,6 @@
 package com.where.WhereYouAt.service;
 
-import com.where.WhereYouAt.controller.dto.ModUserDto;
-import com.where.WhereYouAt.controller.dto.UserDto;
+import com.where.WhereYouAt.controller.dto.user.UserDto;
 import com.where.WhereYouAt.domain.User;
 import com.where.WhereYouAt.domain.dto.Birthday;
 import com.where.WhereYouAt.domain.utils.Uploader;

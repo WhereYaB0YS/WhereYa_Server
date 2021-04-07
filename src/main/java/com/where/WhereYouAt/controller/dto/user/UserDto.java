@@ -1,4 +1,4 @@
-package com.where.WhereYouAt.controller.dto;
+package com.where.WhereYouAt.controller.dto.user;
 
 import com.where.WhereYouAt.enumclass.GenderStatus;
 import lombok.AllArgsConstructor;

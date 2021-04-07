@@ -1,6 +1,6 @@
 package com.where.WhereYouAt.controller;
 
-import com.where.WhereYouAt.controller.dto.*;
+import com.where.WhereYouAt.controller.dto.user.*;
 import com.where.WhereYouAt.domain.User;
 import com.where.WhereYouAt.message.ResponseMessage;
 import com.where.WhereYouAt.repository.UserRepository;

@@ -1,7 +1,7 @@
 package com.where.WhereYouAt.controller;
 
-import com.where.WhereYouAt.controller.dto.LoginRequestDto;
-import com.where.WhereYouAt.controller.dto.LoginResponseDto;
+import com.where.WhereYouAt.controller.dto.user.LoginRequestDto;
+import com.where.WhereYouAt.controller.dto.user.LoginResponseDto;
 import com.where.WhereYouAt.domain.User;
 import com.where.WhereYouAt.domain.utils.JwtUtil;
 import com.where.WhereYouAt.service.UserService;

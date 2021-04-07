@@ -1,9 +1,10 @@
-package com.where.WhereYouAt.controller.dto;
+package com.where.WhereYouAt.controller.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.NotNull;
 
@@ -11,8 +12,8 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CheckUserIdDto {
+public class CheckNicknameDto {
 
     @NotNull
-    private String userId;
+    private String nickname;
 }

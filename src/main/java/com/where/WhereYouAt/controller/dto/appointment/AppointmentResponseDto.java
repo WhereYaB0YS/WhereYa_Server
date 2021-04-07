@@ -1,9 +1,8 @@
-package com.where.WhereYouAt.controller.dto;
+package com.where.WhereYouAt.controller.dto.appointment;
 
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -18,7 +17,9 @@ public class AppointmentResponseDto {
 
     private String destination;
 
-    private LocalDateTime date;
+    private String date;
 
     private List<AppointmentFriendDto> friends;
+
+
 }

@@ -1,8 +1,7 @@
 package com.where.WhereYouAt.controller;
 
 
-import com.where.WhereYouAt.controller.dto.FriendsListResponseDto;
-import com.where.WhereYouAt.controller.dto.FriendsResponseDto;
+import com.where.WhereYouAt.controller.dto.friend.FriendsListResponseDto;
 import com.where.WhereYouAt.message.ResponseMessage;
 import com.where.WhereYouAt.repository.UserRepository;
 import com.where.WhereYouAt.service.FriendService;
@@ -12,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 
 @RequestMapping(value = "/friend")
 @RestController

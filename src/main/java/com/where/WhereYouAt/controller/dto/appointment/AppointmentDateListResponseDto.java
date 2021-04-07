@@ -1,6 +1,5 @@
-package com.where.WhereYouAt.controller.dto;
+package com.where.WhereYouAt.controller.dto.appointment;
 
-import com.where.WhereYouAt.domain.Appointment;
 import lombok.Builder;
 import lombok.Data;
 

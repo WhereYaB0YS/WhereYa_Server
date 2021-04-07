@@ -1,6 +1,6 @@
 package com.where.WhereYouAt.service;
 
-import com.where.WhereYouAt.controller.dto.FriendsResponseDto;
+import com.where.WhereYouAt.controller.dto.friend.FriendsResponseDto;
 import com.where.WhereYouAt.domain.Friend;
 import com.where.WhereYouAt.domain.User;
 import com.where.WhereYouAt.exception.AlreadyExistedFriendException;
@@ -34,7 +34,6 @@ public class FriendService {
             throw new RuntimeException();
         }
 
-        //TODO: 이미 등록된 친구 error
         Optional<Friend> friendRel = friendRepository.findByUserIdAndUserId1(userId,friend.getId());
 
         if(friendRel.isPresent()){

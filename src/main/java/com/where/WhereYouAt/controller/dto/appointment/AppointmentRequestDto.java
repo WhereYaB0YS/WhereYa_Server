@@ -1,4 +1,4 @@
-package com.where.WhereYouAt.controller.dto;
+package com.where.WhereYouAt.controller.dto.appointment;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

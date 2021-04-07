@@ -1,7 +1,10 @@
 package com.where.WhereYouAt.controller;
 
 
-import com.where.WhereYouAt.controller.dto.*;
+import com.where.WhereYouAt.controller.dto.appointment.AppointmentDateListResponseDto;
+import com.where.WhereYouAt.controller.dto.appointment.AppointmentListResponseDto;
+import com.where.WhereYouAt.controller.dto.appointment.AppointmentRequestDto;
+import com.where.WhereYouAt.controller.dto.appointment.AppointmentResponseDto;
 import com.where.WhereYouAt.message.ResponseMessage;
 import com.where.WhereYouAt.service.AppointmentService;
 import io.jsonwebtoken.Claims;
@@ -33,7 +36,7 @@ public class AppointmentController {
     }
     //약속 상세정보 조회
     @GetMapping("/{appointmentId}")
-    public ResponseEntity<AppointmentResponseDto> getDetailedAppointment(Authentication authentication,@PathVariable Long appointmentId){
+    public ResponseEntity<AppointmentResponseDto> getDetailedAppointment(Authentication authentication, @PathVariable Long appointmentId){
 
         Claims claims = (Claims) authentication.getPrincipal();
         Long userId = claims.get("userId",Long.class);
@@ -55,6 +58,18 @@ public class AppointmentController {
                 .build();
 
         return ResponseEntity.ok(list);
+    }
+
+    //곧 다가올 약속 조회
+    @GetMapping("/approach")
+    public ResponseEntity<AppointmentResponseDto> getApproachedAppointment(Authentication authentication){
+
+        Claims claims = (Claims) authentication.getPrincipal();
+        Long userId = claims.get("userId",Long.class);
+
+        return ResponseEntity.ok(appointmentService.getApproachedAppointment(userId));
+
+
     }
 
     //약속목록 조회
