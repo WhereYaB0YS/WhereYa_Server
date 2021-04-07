@@ -1,9 +1,7 @@
 package com.where.WhereYouAt.controller;
 
 
-import com.where.WhereYouAt.controller.dto.AppointmentListResponseDto;
-import com.where.WhereYouAt.controller.dto.AppointmentRequestDto;
-import com.where.WhereYouAt.controller.dto.AppointmentResponseDto;
+import com.where.WhereYouAt.controller.dto.*;
 import com.where.WhereYouAt.message.ResponseMessage;
 import com.where.WhereYouAt.service.AppointmentService;
 import io.jsonwebtoken.Claims;
@@ -12,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RequestMapping(value = "/appointment")
 @RestController
@@ -32,7 +32,7 @@ public class AppointmentController {
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.CREATED,"ok"));
     }
     //약속 상세정보 조회
-    @GetMapping("{/appointmentId}")
+    @GetMapping("/{appointmentId}")
     public ResponseEntity<AppointmentResponseDto> getDetailedAppointment(Authentication authentication,@PathVariable Long appointmentId){
 
         Claims claims = (Claims) authentication.getPrincipal();
@@ -41,6 +41,20 @@ public class AppointmentController {
         AppointmentResponseDto dto = appointmentService.getDetailedAppointment(userId,appointmentId);
 
         return  ResponseEntity.ok(dto);
+    }
+
+    //날짜별로 약속목록 조회
+    @GetMapping("/date/{date}")
+    public ResponseEntity<AppointmentDateListResponseDto> getAppointmentsByDate(Authentication authentication, @PathVariable String date){
+
+        Claims claims = (Claims) authentication.getPrincipal();
+        Long userId = claims.get("userId",Long.class);
+
+        AppointmentDateListResponseDto list =  AppointmentDateListResponseDto.builder()
+                .appointmentList(appointmentService.getAppointmentByDate(userId,LocalDate.parse(date)))
+                .build();
+
+        return ResponseEntity.ok(list);
     }
 
     //약속목록 조회

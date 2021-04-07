@@ -1,5 +1,6 @@
 package com.where.WhereYouAt.service;
 
+import com.where.WhereYouAt.controller.dto.AppointmentDateResponseDto;
 import com.where.WhereYouAt.controller.dto.AppointmentFriendDto;
 import com.where.WhereYouAt.controller.dto.AppointmentRequestDto;
 import com.where.WhereYouAt.controller.dto.AppointmentResponseDto;
@@ -12,17 +13,22 @@ import com.where.WhereYouAt.exception.NotExistedUserIdException;
 import com.where.WhereYouAt.repository.AppointmentManagerRepository;
 import com.where.WhereYouAt.repository.AppointmentRepository;
 import com.where.WhereYouAt.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.joda.time.LocalTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
 @Service
 @Transactional
+@Slf4j
 public class AppointmentService {
 
     @Autowired
@@ -157,8 +163,31 @@ public class AppointmentService {
                 .destination(appointment.getDestination())
                 .friends(friends)
                 .build();
+    }
 
+    //날짜별로 약속목록 조회
+    public List<AppointmentDateResponseDto> getAppointmentByDate(Long userId, LocalDate date) {
+       List<AppointmentManager>appointmentRels = appointmentManagerRepository.findAllByUserId(userId);
 
+       List<AppointmentDateResponseDto> appointments = new ArrayList<>();
+
+       for(AppointmentManager appointmentRel:appointmentRels){
+           Appointment appointment = appointmentRel.getAppointment();
+
+           if(LocalDate.from(appointment.getDate()).equals(date)){// LocalDateTime을 LocalDate로 변환
+               DateTimeFormatter formatter = DateTimeFormatter.ofPattern("a h:mm");
+
+               appointments.add(AppointmentDateResponseDto.builder()
+                       .id(appointment.getId())
+                       .name(appointment.getName())
+                       //.date(appointment.getDate())
+                       .time(appointment.getDate().format(formatter))
+                       .destination(appointment.getDestination())
+                       .build());
+           }
+       }
+
+      return appointments;
     }
 }
 
