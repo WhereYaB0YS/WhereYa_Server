@@ -61,16 +61,26 @@ public class AppointmentService {
                 .build());
 
         if(dto.getFriends()!=null) {
-            StringTokenizer friends = new StringTokenizer(dto.getFriends(),",");
-            while (friends.hasMoreTokens()) {
-               User friend =userRepository.findByNickname(friends.nextToken())
-                       .orElseThrow(NotExistedUserIdException::new);
-
+//            StringTokenizer friends = new StringTokenizer(dto.getFriends(),",");
+//            while (friends.hasMoreTokens()) {
+//               User friend =userRepository.findByNickname(friends.nextToken())
+//                       .orElseThrow(NotExistedUserIdException::new);
+//
+//                appointmentManagerRepository.save(AppointmentManager.builder()
+//                        .user(friend)
+//                        .appointment(appointment)
+//                        .build());
+//            }
+            for(String nickname:dto.getFriends()){
+                User friend =userRepository.findByNickname(nickname)
+                        .orElseThrow(NotExistedUserIdException::new);
                 appointmentManagerRepository.save(AppointmentManager.builder()
                         .user(friend)
                         .appointment(appointment)
                         .build());
             }
+
+
         }
     }
 
