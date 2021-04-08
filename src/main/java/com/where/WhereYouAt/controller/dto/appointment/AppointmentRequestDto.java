@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Data
@@ -15,13 +15,17 @@ import java.util.List;
 @Builder
 public class AppointmentRequestDto {
 
+    private Long id;
+
     private String name;
 
     private String memo;
 
-    private LocalDateTime date;
+    private LocalDate date;
 
-    private String destination;
+    private LocalTime time;
+
+    private DestinationDto destination;
 
     private List<String> friends;
 }

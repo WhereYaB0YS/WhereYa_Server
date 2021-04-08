@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class AppointmentResponseDto {
+public class AppointmentRoomDto {
 
     private Long id;
 
@@ -19,7 +19,5 @@ public class AppointmentResponseDto {
 
     private String date;
 
-    private List<String> friends;
-
-
+    private List<AppointmentFriendDto> friends;
 }

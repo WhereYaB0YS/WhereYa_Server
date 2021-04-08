@@ -1,10 +1,9 @@
 package com.where.WhereYouAt.controller;
 
 
-import com.where.WhereYouAt.controller.dto.appointment.AppointmentDateListResponseDto;
 import com.where.WhereYouAt.controller.dto.appointment.AppointmentListResponseDto;
 import com.where.WhereYouAt.controller.dto.appointment.AppointmentRequestDto;
-import com.where.WhereYouAt.controller.dto.appointment.AppointmentResponseDto;
+import com.where.WhereYouAt.controller.dto.appointment.AppointmentListResponseDto2;
 import com.where.WhereYouAt.message.ResponseMessage;
 import com.where.WhereYouAt.service.AppointmentService;
 import io.jsonwebtoken.Claims;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
-@RequestMapping(value = "/appointment")
+@RequestMapping(value = "/promise")
 @RestController
 public class AppointmentController {
 
@@ -34,44 +33,44 @@ public class AppointmentController {
 
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.CREATED,"ok"));
     }
-    //약속 상세정보 조회
-    @GetMapping("/{appointmentId}")
-    public ResponseEntity<AppointmentResponseDto> getDetailedAppointment(Authentication authentication, @PathVariable Long appointmentId){
-
-        Claims claims = (Claims) authentication.getPrincipal();
-        Long userId = claims.get("userId",Long.class);
-
-        AppointmentResponseDto dto = appointmentService.getDetailedAppointment(userId,appointmentId);
-
-        return  ResponseEntity.ok(dto);
-    }
-
+//    //약속 상세정보 조회
+//    @GetMapping("/{promiseId}")
+//    public ResponseEntity<AppointmentResponseDto> getDetailedAppointment(Authentication authentication, @PathVariable Long promiseId){
+//
+//        Claims claims = (Claims) authentication.getPrincipal();
+//        Long userId = claims.get("userId",Long.class);
+//
+//        AppointmentResponseDto dto = appointmentService.getDetailedAppointment(userId,promiseId);
+//
+//        return  ResponseEntity.ok(dto);
+//    }
+//
     //날짜별로 약속목록 조회
     @GetMapping("/date/{date}")
-    public ResponseEntity<AppointmentDateListResponseDto> getAppointmentsByDate(Authentication authentication, @PathVariable String date){
+    public ResponseEntity<AppointmentListResponseDto2> getAppointmentsByDate(Authentication authentication, @PathVariable String date){
 
         Claims claims = (Claims) authentication.getPrincipal();
         Long userId = claims.get("userId",Long.class);
 
-        AppointmentDateListResponseDto list =  AppointmentDateListResponseDto.builder()
-                .appointmentList(appointmentService.getAppointmentByDate(userId,LocalDate.parse(date)))
+        AppointmentListResponseDto2 list =  AppointmentListResponseDto2.builder()
+                .promiseList(appointmentService.getAppointmentByDate(userId,LocalDate.parse(date)))
                 .build();
 
         return ResponseEntity.ok(list);
     }
 
-    //곧 다가올 약속 조회
-    @GetMapping("/approach")
-    public ResponseEntity<AppointmentResponseDto> getApproachedAppointment(Authentication authentication){
-
-        Claims claims = (Claims) authentication.getPrincipal();
-        Long userId = claims.get("userId",Long.class);
-
-        return ResponseEntity.ok(appointmentService.getApproachedAppointment(userId));
-
-
-    }
-
+//    //곧 다가올 약속 조회
+//    @GetMapping("/approach")
+//    public ResponseEntity<AppointmentResponseDto> getApproachedAppointment(Authentication authentication){
+//
+//        Claims claims = (Claims) authentication.getPrincipal();
+//        Long userId = claims.get("userId",Long.class);
+//
+//        return ResponseEntity.ok(appointmentService.getApproachedAppointment(userId));
+//
+//
+//    }
+//
     //약속목록 조회
     @GetMapping
     public ResponseEntity<AppointmentListResponseDto> getAppointments(Authentication authentication){
@@ -80,32 +79,32 @@ public class AppointmentController {
         Long userId = claims.get("userId",Long.class);
 
         AppointmentListResponseDto list =  AppointmentListResponseDto.builder()
-                .appointmentList(appointmentService.getAppointments(userId))
+                .promiseList(appointmentService.getAppointments(userId))
                 .build();
 
         return ResponseEntity.ok(list);
     }
 
     //약속수정
-    @PatchMapping("/{appointmentId}")
-    public ResponseEntity<ResponseMessage> editAppointment(Authentication authentication, @PathVariable Long appointmentId, @RequestBody AppointmentRequestDto dto){
+    @PatchMapping("/{promiseId}")
+    public ResponseEntity<ResponseMessage> editAppointment(Authentication authentication, @PathVariable Long promiseId, @RequestBody AppointmentRequestDto dto){
 
         Claims claims = (Claims) authentication.getPrincipal();
         Long userId = claims.get("userId",Long.class);
 
-        appointmentService.editAppointment(userId,appointmentId,dto);
+        appointmentService.editAppointment(userId,promiseId,dto);
 
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.CREATED,"ok"));
     }
 
     //약속삭제
-    @DeleteMapping("/{appointmentId}")
-    public ResponseEntity<ResponseMessage>deleteAppointment(Authentication authentication, @PathVariable Long appointmentId){
+    @DeleteMapping("/{promiseId}")
+    public ResponseEntity<ResponseMessage>deleteAppointment(Authentication authentication, @PathVariable Long promiseId){
 
         Claims claims = (Claims) authentication.getPrincipal();
         Long userId = claims.get("userId",Long.class);
 
-        appointmentService.deleteAppointment(userId,appointmentId);
+        appointmentService.deleteAppointment(userId,promiseId);
 
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
     }

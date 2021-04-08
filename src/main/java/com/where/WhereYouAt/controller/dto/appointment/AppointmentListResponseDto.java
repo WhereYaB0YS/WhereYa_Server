@@ -9,5 +9,5 @@ import java.util.List;
 @Builder
 public class AppointmentListResponseDto {
 
-    private List<AppointmentResponseDto> appointmentList;
+    private List<AppointmentResponseDto> promiseList;
 }

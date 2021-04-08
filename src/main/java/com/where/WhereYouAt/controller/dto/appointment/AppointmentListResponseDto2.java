@@ -7,7 +7,8 @@ import java.util.List;
 
 @Data
 @Builder
-public class AppointmentDateListResponseDto {
+public class AppointmentListResponseDto2 {
 
-    private List<AppointmentDateResponseDto> appointmentList ;
+    private List<AppointmentResponseDto2> promiseList;
 }
+
