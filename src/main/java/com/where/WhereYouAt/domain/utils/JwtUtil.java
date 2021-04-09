@@ -6,6 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 import java.security.Key;
+import java.util.Date;
 
 
 public class JwtUtil {
@@ -17,6 +18,7 @@ public class JwtUtil {
 
     public String createToken(Long userId, String nickname){
         String token = Jwts.builder()
+                .setExpiration(new Date(300000))
                 .claim("userId",userId)
                 .claim("nickname",nickname)
                 .signWith(key, SignatureAlgorithm.HS256)
