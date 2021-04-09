@@ -5,17 +5,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotEmpty;
 
 @Embeddable
 @Data
 @NoArgsConstructor
 public class Destination {
 
+
     private String placeName;
+
 
     private String addressName;
 
+
     private String x;
+
 
     private String y;
 

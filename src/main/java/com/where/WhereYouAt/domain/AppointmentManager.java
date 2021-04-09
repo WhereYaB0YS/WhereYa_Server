@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
@@ -17,10 +18,12 @@ public class AppointmentManager {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @ManyToOne
     @JsonBackReference
     private User user;
 
+    @NotNull
     @ManyToOne
     @JsonBackReference
     private Appointment appointment;

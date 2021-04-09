@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -25,7 +26,7 @@ public class LogInController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> login(@RequestBody LoginRequestDto dto) throws URISyntaxException {
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequestDto dto) throws URISyntaxException {
         String userId = dto.getUserId();
         String password = dto.getPassword();
 

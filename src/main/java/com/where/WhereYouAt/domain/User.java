@@ -29,19 +29,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @NotEmpty
     private String userId;
 
-    @NotNull
     @NotEmpty
     private String password;
 
-    @NotNull
     @NotEmpty
     private String nickname;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private GenderStatus gender;
 

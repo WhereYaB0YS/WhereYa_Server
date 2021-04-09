@@ -2,6 +2,7 @@ package com.where.WhereYouAt.controller.dto.user;
 
 import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -10,9 +11,10 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class LoginRequestDto {
 
-    @NotNull
+    @NotEmpty
     private String userId;
 
-    @NotNull
+
+    @NotEmpty
     private String password;
 }

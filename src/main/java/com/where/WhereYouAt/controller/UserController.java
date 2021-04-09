@@ -51,7 +51,7 @@ public class UserController{
 
     //아이디 중복 확인
     @PostMapping("/check/userId")
-    public ResponseEntity<ResponseMessage> checkUserId(@RequestBody CheckUserIdDto dto){
+    public ResponseEntity<ResponseMessage> checkUserId(@RequestBody @Valid CheckUserIdDto dto){
         userService.checkUserId(dto.getUserId());
 
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));
@@ -59,7 +59,7 @@ public class UserController{
 
     //닉네임 중복 확인
     @PostMapping("/check/nickname")
-    public ResponseEntity<ResponseMessage> checkNickname(@RequestBody CheckNicknameDto dto){
+    public ResponseEntity<ResponseMessage> checkNickname(@RequestBody @Valid CheckNicknameDto dto){
         userService.checkNickname(dto.getNickname());
 
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.OK,"ok"));

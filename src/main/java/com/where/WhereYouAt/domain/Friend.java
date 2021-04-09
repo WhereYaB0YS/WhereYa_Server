@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
@@ -24,6 +25,7 @@ public class Friend {
     @JsonBackReference
     private User user;
 
+    @NotNull
     private Long userId1;
 
     @ColumnDefault("0")

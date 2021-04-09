@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -14,6 +15,6 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class CheckNicknameDto {
 
-    @NotNull
+    @NotEmpty
     private String nickname;
 }

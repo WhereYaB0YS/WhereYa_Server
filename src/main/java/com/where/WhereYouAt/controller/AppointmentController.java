@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 
 @RequestMapping(value = "/promise")
@@ -22,7 +23,7 @@ public class AppointmentController {
 
     //약속 추가
     @PostMapping
-    public ResponseEntity<ResponseMessage> addAppointment(Authentication authentication, @RequestBody AppointmentRequestDto dto){
+    public ResponseEntity<ResponseMessage> addAppointment(Authentication authentication, @RequestBody @Valid AppointmentRequestDto dto){
 
         Claims claims = (Claims) authentication.getPrincipal();
         Long userId = claims.get("userId",Long.class);
@@ -97,7 +98,7 @@ public class AppointmentController {
 
     //약속수정
     @PatchMapping("/{promiseId}")
-    public ResponseEntity<ResponseMessage> editAppointment(Authentication authentication, @PathVariable Long promiseId, @RequestBody AppointmentRequestDto dto){
+    public ResponseEntity<ResponseMessage> editAppointment(Authentication authentication, @PathVariable Long promiseId, @RequestBody @Valid AppointmentRequestDto dto){
 
         Claims claims = (Claims) authentication.getPrincipal();
         Long userId = claims.get("userId",Long.class);
