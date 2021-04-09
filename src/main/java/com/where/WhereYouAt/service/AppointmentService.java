@@ -13,6 +13,7 @@ import com.where.WhereYouAt.repository.AppointmentRepository;
 import com.where.WhereYouAt.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -163,6 +164,22 @@ public class AppointmentService {
 //                .build();
 //    }
 
+    //날짜별 약속유무 조회
+    public List<LocalDate> getcheckedAppointemnt(Long userId) {
+
+        List<AppointmentManager> appointmentRels = appointmentManagerRepository.findAllByUserId(userId);
+        List<LocalDate> dateWithEvent= new ArrayList<>();
+
+        for(AppointmentManager appointmentRel:appointmentRels){
+            if(!dateWithEvent.contains(LocalDate.from(appointmentRel.getAppointment().getDate()))){
+                dateWithEvent.add(LocalDate.from(appointmentRel.getAppointment().getDate()));
+            }
+        }
+
+        return dateWithEvent;
+
+    }
+
     //날짜별로 약속목록 조회
     public List<AppointmentResponseDto2> getAppointmentByDate(Long userId, LocalDate date) {
 
@@ -198,6 +215,8 @@ public class AppointmentService {
 
       return appointments;
     }
+
+
 //
 //    //곧 다가올 약속 조회
 //    public AppointmentResponseDto getApproachedAppointment(Long userId) {

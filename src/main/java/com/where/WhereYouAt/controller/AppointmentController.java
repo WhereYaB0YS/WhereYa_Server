@@ -1,9 +1,7 @@
 package com.where.WhereYouAt.controller;
 
 
-import com.where.WhereYouAt.controller.dto.appointment.AppointmentListResponseDto;
-import com.where.WhereYouAt.controller.dto.appointment.AppointmentRequestDto;
-import com.where.WhereYouAt.controller.dto.appointment.AppointmentListResponseDto2;
+import com.where.WhereYouAt.controller.dto.appointment.*;
 import com.where.WhereYouAt.message.ResponseMessage;
 import com.where.WhereYouAt.service.AppointmentService;
 import io.jsonwebtoken.Claims;
@@ -44,7 +42,19 @@ public class AppointmentController {
 //
 //        return  ResponseEntity.ok(dto);
 //    }
-//
+
+    //날짜별 약속유무 조회
+    @GetMapping("/checkDate")
+    public ResponseEntity<AppointmentcheckDateDto> getcheckedAppointment(Authentication authentication){
+        Claims claims = (Claims) authentication.getPrincipal();
+        Long userId = claims.get("userId",Long.class);
+
+        return ResponseEntity.ok(AppointmentcheckDateDto.builder()
+                .datesWithEvent(appointmentService.getcheckedAppointemnt(userId))
+                .build());
+    }
+
+
     //날짜별로 약속목록 조회
     @GetMapping("/date/{date}")
     public ResponseEntity<AppointmentListResponseDto2> getAppointmentsByDate(Authentication authentication, @PathVariable String date){
@@ -58,8 +68,8 @@ public class AppointmentController {
 
         return ResponseEntity.ok(list);
     }
-
-//    //곧 다가올 약속 조회
+//
+//    //가장 빨리 다가올 약속 조회
 //    @GetMapping("/approach")
 //    public ResponseEntity<AppointmentResponseDto> getApproachedAppointment(Authentication authentication){
 //
