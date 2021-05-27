@@ -1,6 +1,6 @@
 어디야
 <div align="center">
-<img src="./img/logo.png" alt="logo" width="200">
+<img width="228" alt="logo" src="https://user-images.githubusercontent.com/63579113/119791189-8d3e0a00-bf0f-11eb-943c-be697b653ce1.png">
 </div>
 
 
