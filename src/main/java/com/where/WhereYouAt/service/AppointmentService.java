@@ -68,6 +68,7 @@ public class AppointmentService {
                 appointmentManagerRepository.save(AppointmentManager.builder()
                         .user(friend)
                         .appointment(appointment)
+                        .touchdown(false)
                         .build());
             }
         }
@@ -283,7 +284,38 @@ public class AppointmentService {
                 .timer(timer)
                 .build();
     }
+    //지난 약속 전체 조회
+    public List<LastedAppointmentResponseDto> getLastedAppointments(Long userId){
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a h:mm");
+        //유저의 약속들 뽑기
+        List<AppointmentManager> appointmentRels = appointmentManagerRepository.findAllByUserId(userId);
+        List<LastedAppointmentResponseDto>lastedAppointments = new ArrayList<>();
+        for(int i=0;i<appointmentRels.size();i++){
+                //날짜가 지난 것만
+                if(appointmentRels.get(i).getAppointment().getPassed()){
+                    List<Touchdown> touchdownList = new ArrayList<>();
+
+                    List<AppointmentManager> appointmentManagers =appointmentRels.get(i).getAppointment().getAppointmentList();
+                    for(int j=0; j<appointmentManagers.size(); j++){
+                        touchdownList.add(Touchdown.builder()
+                                .userNickname(appointmentManagers.get(j).getUser().getNickname())
+                                .check(appointmentManagers.get(j).getTouchdown())
+                                .build());
+                    }
+
+                   lastedAppointments.add(LastedAppointmentResponseDto.builder()
+                            .id(appointmentRels.get(i).getAppointment().getId())
+                            .name(appointmentRels.get(i).getAppointment().getName())
+                            .placeName(appointmentRels.get(i).getAppointment().getDestination().getPlaceName())
+                            .date(appointmentRels.get(i).getAppointment().getDate().format(formatter))
+                            .touchdownList(touchdownList)
+                            .build());
+                }
+
+        }
+        return lastedAppointments;
+    }
 
 
 //    //곧 다가올 약속 조회

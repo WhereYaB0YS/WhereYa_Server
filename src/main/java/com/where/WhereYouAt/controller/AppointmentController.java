@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.List;
 
 @RequestMapping(value = "/promise")
 @RestController
@@ -70,7 +71,7 @@ public class AppointmentController {
         return ResponseEntity.ok(list);
     }
 
-    //곧 다가올 약속 조회
+    // 다가올 약속 조회
     @GetMapping("/proximate")
     public ResponseEntity<AppointmentProximateDto> getApproachedAppointment(Authentication authentication){
 
@@ -95,6 +96,16 @@ public class AppointmentController {
 
         return ResponseEntity.ok(list);
     }
+
+    //지난 약속 전체 조회
+    @GetMapping("/passed")
+    public ResponseEntity<AppointmentListResponseDto> getLastedAppointments(Authentication authentication){
+        Claims claims = (Claims) authentication.getPrincipal();
+        Long userId = claims.get("userId",Long.class);
+
+        return ResponseEntity.ok(AppointmentListResponseDto.builder().promiseList(appointmentService.getLastedAppointments(userId)).build());
+    }
+
 
     //약속수정
     @PatchMapping("/{promiseId}")

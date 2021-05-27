@@ -1,5 +1,7 @@
 package com.where.WhereYouAt.controller.dto.appointment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 
