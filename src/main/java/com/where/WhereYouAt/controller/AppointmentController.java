@@ -70,7 +70,7 @@ public class AppointmentController {
         return ResponseEntity.ok(list);
     }
 
-    //가장 빨리 다가올 약속 조회
+    //곧 다가올 약속 조회
     @GetMapping("/proximate")
     public ResponseEntity<AppointmentProximateDto> getApproachedAppointment(Authentication authentication){
 

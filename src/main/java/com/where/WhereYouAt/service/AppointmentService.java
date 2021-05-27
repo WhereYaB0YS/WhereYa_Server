@@ -248,17 +248,24 @@ public class AppointmentService {
         System.out.println(minTime);
         if(minTime>1440){ //
             minTime = ChronoUnit.DAYS.between(current,min.getDate());
-            timer=Long.toString(minTime);
-            msg = "약속 시간"+" "+timer+"일 전입니다.";
+            timer=Long.toString(minTime)+"일";
+            msg = "약속 시간"+" "+timer+" 전입니다.";
         }else if(minTime<=1440){ //하루남았을 때
             long hour = minTime/60;
             long minutes = minTime%60;
             if(hour>0){
-                timer = Long.toString(hour)+":"+Long.toString(minutes);
+                if(minutes==0){
+                    timer = Long.toString(hour)+"시간";
+                }else if(minutes<10){
+                    timer = Long.toString(hour)+"시간"+" "+"0"+Long.toString(minutes)+"분";
+                }
+                else{
+                    timer = Long.toString(hour)+"시간"+" "+Long.toString(minutes)+"분";
+                }
                 msg = "약속 시간"+" "+timer+"전 입니다";
             }else{
-                timer = Long.toString(minutes);
-                msg = "약속 시간"+" "+timer+"분 전 입니다";
+                timer = Long.toString(minutes)+"분";
+                msg = "약속 시간"+" "+timer+" 전 입니다";
             }
 
 
