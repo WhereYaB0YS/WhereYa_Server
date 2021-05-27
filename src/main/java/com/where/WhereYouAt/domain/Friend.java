@@ -15,11 +15,9 @@ import javax.validation.constraints.NotNull;
 @ToString(exclude = {"user"})
 public class Friend {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     @ManyToOne
     @JsonBackReference

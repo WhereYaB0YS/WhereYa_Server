@@ -17,8 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +39,9 @@ public class AppointmentService {
     @Autowired
     private AppointmentManagerRepository appointmentManagerRepository;
 
+
     // 약속추가
-    public void addAppointmet(Long userId, AppointmentRequestDto dto) {
+    public void addAppointment(Long userId, AppointmentRequestDto dto) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(NotExistedUserIdException::new);
@@ -47,6 +51,7 @@ public class AppointmentService {
                 .memo(dto.getMemo())
                 .destination(Destination.of(dto.getDestination()))
                 .date(dto.getDate().atTime(dto.getTime()))
+                .passed(false)
                 .build();
 
         appointmentRepository.save(appointment);
@@ -216,8 +221,64 @@ public class AppointmentService {
       return appointments;
     }
 
+    //곧 다가올 약속 조회
+    public AppointmentProximateDto getApproachedAppointment(Long userId) {
+        //지난 약속 처리 해야 함
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("a h:mm");
+        List<AppointmentManager> appointmentRels = appointmentManagerRepository.findAllByUserId(userId);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime current = LocalDateTime.of(now.getYear(),now.getMonth(),now.getDayOfMonth(), now.getHour(), now.getMinute());
+        Appointment min = appointmentRels.get(0).getAppointment();
+        long minTime = ChronoUnit.MINUTES.between(current,min.getDate()) ;
+        String timer = "";
+        String msg="";
 
-//
+        //곧 다가올 약속 뽑아내기
+        for(int i=1; i<appointmentRels.size(); i++) {
+            if (appointmentRels.get(i).getAppointment().getDate().isBefore(current)) {
+                appointmentRels.get(i).getAppointment().setPassed(true); // 지난 날짜 처리.
+            }
+
+            //지나지 않은 가장 최신 약속 뽑기
+            if (!appointmentRels.get(i).getAppointment().getPassed() && minTime > ChronoUnit.MINUTES.between(current, appointmentRels.get(i).getAppointment().getDate())) {
+                minTime = ChronoUnit.MINUTES.between(current, appointmentRels.get(i).getAppointment().getDate());
+                min = appointmentRels.get(i).getAppointment();
+            }
+        }
+        System.out.println(minTime);
+        if(minTime>1440){ //
+            minTime = ChronoUnit.DAYS.between(current,min.getDate());
+            timer=Long.toString(minTime);
+            msg = "약속 시간"+" "+timer+"일 전입니다.";
+        }else if(minTime<=1440){ //하루남았을 때
+            long hour = minTime/60;
+            long minutes = minTime%60;
+            if(hour>0){
+                timer = Long.toString(hour)+":"+Long.toString(minutes);
+                msg = "약속 시간"+" "+timer+"전 입니다";
+            }else{
+                timer = Long.toString(minutes);
+                msg = "약속 시간"+" "+timer+"분 전 입니다";
+            }
+
+
+        }else{ //다가올 약속이 없을 때
+            return AppointmentProximateDto.builder().message("약속을 추가해 주세요").build();
+        }
+
+
+        return AppointmentProximateDto.builder()
+                .message(msg)
+                .id(min.getId())
+                .name(min.getName())
+                .placeName(min.getDestination().getPlaceName())
+                .time(min.getDate().format(formatter))
+                .timer(timer)
+                .build();
+    }
+
+
+
 //    //곧 다가올 약속 조회
 //    public AppointmentResponseDto getApproachedAppointment(Long userId) {
 //        //TODO: 지난 약속 처리

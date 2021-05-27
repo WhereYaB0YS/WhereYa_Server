@@ -12,4 +12,9 @@ public interface AppointmentManagerRepository extends JpaRepository<AppointmentM
     List<AppointmentManager> findAllByUserId(Long userId);
 
     Optional<AppointmentManager> findByUserIdAndAppointmentId(Long userId, Long appointmentId);
+
+    //현재 날짜 이후의 약속들만 뽑아내기
+
+
+
 }

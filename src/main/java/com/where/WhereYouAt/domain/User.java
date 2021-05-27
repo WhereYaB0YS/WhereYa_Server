@@ -24,7 +24,6 @@ import java.util.List;
 @Builder
 @Where(clause = "deleted = false")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

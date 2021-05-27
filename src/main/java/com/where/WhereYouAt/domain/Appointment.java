@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.where.WhereYouAt.domain.dto.Destination;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -36,6 +37,9 @@ public class Appointment {
     @Valid
     @Embedded
     private Destination destination;
+
+    @ColumnDefault("false")
+    private Boolean passed;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "appointment")
     @JsonManagedReference

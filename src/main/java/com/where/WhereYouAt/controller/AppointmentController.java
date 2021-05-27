@@ -28,7 +28,7 @@ public class AppointmentController {
         Claims claims = (Claims) authentication.getPrincipal();
         Long userId = claims.get("userId",Long.class);
 
-        appointmentService.addAppointmet(userId,dto);
+        appointmentService.addAppointment(userId,dto);
 
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.CREATED,"ok"));
     }
@@ -69,19 +69,19 @@ public class AppointmentController {
 
         return ResponseEntity.ok(list);
     }
-//
-//    //가장 빨리 다가올 약속 조회
-//    @GetMapping("/approach")
-//    public ResponseEntity<AppointmentResponseDto> getApproachedAppointment(Authentication authentication){
-//
-//        Claims claims = (Claims) authentication.getPrincipal();
-//        Long userId = claims.get("userId",Long.class);
-//
-//        return ResponseEntity.ok(appointmentService.getApproachedAppointment(userId));
-//
-//
-//    }
-//
+
+    //가장 빨리 다가올 약속 조회
+    @GetMapping("/proximate")
+    public ResponseEntity<AppointmentProximateDto> getApproachedAppointment(Authentication authentication){
+
+        Claims claims = (Claims) authentication.getPrincipal();
+        Long userId = claims.get("userId",Long.class);
+
+        return ResponseEntity.ok(appointmentService.getApproachedAppointment(userId));
+
+
+    }
+
     //약속목록 조회
     @GetMapping
     public ResponseEntity<AppointmentListResponseDto> getAppointments(Authentication authentication){
