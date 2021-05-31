@@ -1,5 +1,6 @@
 package com.where.WhereYouAt.controller.dto.appointment;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.where.WhereYouAt.domain.dto.Destination;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,17 +13,19 @@ import lombok.NoArgsConstructor;
 @Builder
 public class DestinationDto {
 
-    private String place_name;
+    @JsonProperty("place_name")
+    private String placeName;
 
-    private String address_name;
+    @JsonProperty("address_name")
+    private String addressName;
 
     private String x;
 
     private String y;
 
     public DestinationDto (Destination destination){
-        this.place_name = destination.getPlaceName();
-        this.address_name = destination.getAddressName();
+        this.placeName = destination.getPlaceName();
+        this.addressName = destination.getAddressName();
         this.x = destination.getX();
         this.y = destination.getY();
     }

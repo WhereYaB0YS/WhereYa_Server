@@ -14,17 +14,9 @@ import java.util.List;
 
 public class AppointmentProximateDto {
 
-    private String message;
+    private AppointmentResponseDto2 promise;
 
-    private Long id;
-
-    private String name;
-
-    @JsonProperty("place_name")
-    private String placeName;
-
-    private String time;
-
-    private String timer;
+    @JsonProperty("lefttime")
+    private LeftTime leftTime;
 
 }

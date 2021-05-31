@@ -4,9 +4,11 @@ import com.where.WhereYouAt.controller.dto.appointment.*;
 import com.where.WhereYouAt.controller.dto.appointment.AppointmentResponseDto2;
 import com.where.WhereYouAt.domain.Appointment;
 import com.where.WhereYouAt.domain.AppointmentManager;
+import com.where.WhereYouAt.domain.Friend;
 import com.where.WhereYouAt.domain.User;
 import com.where.WhereYouAt.domain.dto.Destination;
 import com.where.WhereYouAt.exception.NotExistedAppointmentException;
+import com.where.WhereYouAt.exception.NotExistedPromiseException;
 import com.where.WhereYouAt.exception.NotExistedUserIdException;
 import com.where.WhereYouAt.repository.AppointmentManagerRepository;
 import com.where.WhereYouAt.repository.AppointmentRepository;
@@ -17,9 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -38,6 +38,10 @@ public class AppointmentService {
 
     @Autowired
     private AppointmentManagerRepository appointmentManagerRepository;
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a h:mm");
+    DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
+    DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("a h:mm");
 
 
     // 약속추가
@@ -110,8 +114,6 @@ public class AppointmentService {
 
         List<AppointmentResponseDto> list = new ArrayList<>();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a h:mm");
-
         for(AppointmentManager appointmentRel: user.getAppointmentList()){
             Appointment appointment = appointmentRel.getAppointment();
             List<String> friends = new ArrayList<>();
@@ -126,7 +128,7 @@ public class AppointmentService {
                     .id(appointment.getId())
                     .name(appointment.getName())
                     .memo(appointment.getMemo())
-                    .date(appointment.getDate().format(formatter))
+                    .date(appointment.getDate().format(formatter1))
                     .destination(DestinationDto.of(appointment.getDestination()))
                     .friends(friends)
                     .build());
@@ -204,8 +206,6 @@ public class AppointmentService {
                        friends.add(friend.getNickname());
                    }
                }
-               DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
-               DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("a h:mm");
 
                appointments.add(AppointmentResponseDto2.builder()
                        .id(appointment.getId())
@@ -225,14 +225,17 @@ public class AppointmentService {
     //곧 다가올 약속 조회
     public AppointmentProximateDto getApproachedAppointment(Long userId) {
         //지난 약속 처리 해야 함
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("a h:mm");
+
+        //TODO: 약속 중 passed가 false인 것만 뽑게 수정
         List<AppointmentManager> appointmentRels = appointmentManagerRepository.findAllByUserId(userId);
-        LocalDateTime now = LocalDateTime.now();
+        ZonedDateTime zNow = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        LocalDateTime now = zNow.withZoneSameInstant(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+//        LocalDateTime now = LocalDateTime.now();
         LocalDateTime current = LocalDateTime.of(now.getYear(),now.getMonth(),now.getDayOfMonth(), now.getHour(), now.getMinute());
         Appointment min = appointmentRels.get(0).getAppointment();
         long minTime = ChronoUnit.MINUTES.between(current,min.getDate()) ;
-        String timer = "";
-        String msg="";
+
+        LeftTime leftTime = new LeftTime(0,0,0);
 
         //곧 다가올 약속 뽑아내기
         for(int i=1; i<appointmentRels.size(); i++) {
@@ -246,48 +249,54 @@ public class AppointmentService {
                 min = appointmentRels.get(i).getAppointment();
             }
         }
-        System.out.println(minTime);
-        if(minTime>1440){ //
+
+        List<String>friends = new ArrayList<>();
+        for(AppointmentManager appointmentManager: min.getAppointmentList()){
+            if(appointmentManager.getUser().getId() != userId){
+                friends.add(appointmentManager.getUser().getNickname());
+            }
+        }
+
+        if(minTime>1440){ //하루 이상 남았을
             minTime = ChronoUnit.DAYS.between(current,min.getDate());
-            timer=Long.toString(minTime)+"일";
-            msg = "약속 시간"+" "+timer+" 전입니다.";
+            leftTime.setDay(Long.valueOf(minTime).intValue());
         }else if(minTime<=1440){ //하루남았을 때
-            long hour = minTime/60;
-            long minutes = minTime%60;
+            int hour = Long.valueOf(minTime).intValue()/60;
+            int minutes = Long.valueOf(minTime).intValue()%60;
+
             if(hour>0){
                 if(minutes==0){
-                    timer = Long.toString(hour)+"시간";
-                }else if(minutes<10){
-                    timer = Long.toString(hour)+"시간"+" "+"0"+Long.toString(minutes)+"분";
+                    leftTime.setHour(hour);
+                }else{
+                    leftTime.setHour(hour);
+                    leftTime.setMinute(minutes);
                 }
-                else{
-                    timer = Long.toString(hour)+"시간"+" "+Long.toString(minutes)+"분";
-                }
-                msg = "약속 시간"+" "+timer+"전 입니다";
-            }else{
-                timer = Long.toString(minutes)+"분";
-                msg = "약속 시간"+" "+timer+" 전 입니다";
+            }else{ // 분만 있을 때
+                leftTime.setMinute(minutes);
             }
 
-
         }else{ //다가올 약속이 없을 때
-            return AppointmentProximateDto.builder().message("약속을 추가해 주세요").build();
+            throw new NotExistedPromiseException();
         }
 
 
         return AppointmentProximateDto.builder()
-                .message(msg)
-                .id(min.getId())
-                .name(min.getName())
-                .placeName(min.getDestination().getPlaceName())
-                .time(min.getDate().format(formatter))
-                .timer(timer)
+                .promise(AppointmentResponseDto2.builder()
+                        .id(min.getId())
+                        .name(min.getName())
+                        .memo(min.getMemo())
+                        .destination(DestinationDto.of(min.getDestination()))
+                        .date(min.getDate().format(formatter1))
+                        .time(min.getDate().format(formatter2))
+                        .friends(friends)
+                        .build())
+                .leftTime(leftTime)
                 .build();
     }
+
     //지난 약속 전체 조회
     public List<LastedAppointmentResponseDto> getLastedAppointments(Long userId){
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a h:mm");
         //유저의 약속들 뽑기
         List<AppointmentManager> appointmentRels = appointmentManagerRepository.findAllByUserId(userId);
         List<LastedAppointmentResponseDto>lastedAppointments = new ArrayList<>();

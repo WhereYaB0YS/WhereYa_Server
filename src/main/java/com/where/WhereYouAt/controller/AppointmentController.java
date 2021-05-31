@@ -79,8 +79,6 @@ public class AppointmentController {
         Long userId = claims.get("userId",Long.class);
 
         return ResponseEntity.ok(appointmentService.getApproachedAppointment(userId));
-
-
     }
 
     //약속목록 조회

@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotEmpty;
 
 @Embeddable
 @Data
@@ -25,8 +24,8 @@ public class Destination {
     private String y;
 
     public Destination(DestinationDto destination){
-        this.placeName = destination.getPlace_name();
-        this.addressName = destination.getAddress_name();
+        this.placeName = destination.getPlaceName();
+        this.addressName = destination.getAddressName();
         this.x = destination.getX();
         this.y = destination.getY();
     }
