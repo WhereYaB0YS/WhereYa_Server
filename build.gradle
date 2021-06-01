@@ -22,9 +22,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-//	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'com.h2database:h2'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//	compile group: 'org.springframework', name: 'spring-websocket', version: '5.2.3.RELEASE'
 	compile 'org.springframework.boot:spring-boot-starter-jdbc'
 	compile 'mysql:mysql-connector-java'
 	implementation 'org.projectlombok:lombok:1.18.16'
@@ -42,6 +43,8 @@ dependencies {
 	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.5.0'
 	testImplementation 'org.mockito:mockito-junit-jupiter'
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
+
+
 }
 
 test {
