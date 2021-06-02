@@ -10,15 +10,12 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class RoomController {
 
-    @MessageMapping("/receive")
-    @SendTo("/send")
+    @MessageMapping("/send") //이걸로 보내고
+    @SendTo("/topic/receive")  //요거로 받는다
+
     public RoomMessage SocketHandler(@Payload RoomMessage roomMessage){
-
-
-
         return roomMessage;
     }
-
 //    @MessageMapping("/room.addUser")
 //    @SendTo("/topic/public")
 //    public RoomMessage addUser(@Payload RoomMessage roomMessage, SimpMessageHeaderAccessor headerAccessor){

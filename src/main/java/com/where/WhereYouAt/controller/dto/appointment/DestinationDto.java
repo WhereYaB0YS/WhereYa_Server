@@ -1,5 +1,6 @@
 package com.where.WhereYouAt.controller.dto.appointment;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.where.WhereYouAt.domain.dto.Destination;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DestinationDto {
 
     @JsonProperty("place_name")

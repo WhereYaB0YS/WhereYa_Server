@@ -9,7 +9,7 @@ import lombok.Data;
 public class Touchdown {
 
     @JsonProperty("user_nickname")
-    private String userNickname;
+    private String nickname;
 
     private Boolean check;
 

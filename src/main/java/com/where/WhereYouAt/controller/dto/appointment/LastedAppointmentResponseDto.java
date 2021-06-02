@@ -14,8 +14,7 @@ public class LastedAppointmentResponseDto {
 
     private String name;
 
-    @JsonProperty("place_name")
-    private String placeName;
+    private DestinationDto destination;
 
     private String date;
 

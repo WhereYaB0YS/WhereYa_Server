@@ -4,7 +4,6 @@ import com.where.WhereYouAt.controller.dto.appointment.*;
 import com.where.WhereYouAt.controller.dto.appointment.AppointmentResponseDto2;
 import com.where.WhereYouAt.domain.Appointment;
 import com.where.WhereYouAt.domain.AppointmentManager;
-import com.where.WhereYouAt.domain.Friend;
 import com.where.WhereYouAt.domain.User;
 import com.where.WhereYouAt.domain.dto.Destination;
 import com.where.WhereYouAt.exception.NotExistedAppointmentException;
@@ -15,7 +14,6 @@ import com.where.WhereYouAt.repository.AppointmentRepository;
 import com.where.WhereYouAt.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -308,7 +306,7 @@ public class AppointmentService {
                     List<AppointmentManager> appointmentManagers =appointmentRels.get(i).getAppointment().getAppointmentList();
                     for(int j=0; j<appointmentManagers.size(); j++){
                         touchdownList.add(Touchdown.builder()
-                                .userNickname(appointmentManagers.get(j).getUser().getNickname())
+                                .nickname(appointmentManagers.get(j).getUser().getNickname())
                                 .check(appointmentManagers.get(j).getTouchdown())
                                 .build());
                     }
@@ -316,7 +314,7 @@ public class AppointmentService {
                    lastedAppointments.add(LastedAppointmentResponseDto.builder()
                             .id(appointmentRels.get(i).getAppointment().getId())
                             .name(appointmentRels.get(i).getAppointment().getName())
-                            .placeName(appointmentRels.get(i).getAppointment().getDestination().getPlaceName())
+                            .destination(appointmentRels.get(i).getAppointment().getDestination().getPlaceName())
                             .date(appointmentRels.get(i).getAppointment().getDate().format(formatter))
                             .touchdownList(touchdownList)
                             .build());
