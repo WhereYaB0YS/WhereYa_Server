@@ -294,7 +294,6 @@ public class AppointmentService {
 
     //지난 약속 전체 조회
     public List<LastedAppointmentResponseDto> getLastedAppointments(Long userId){
-
         //유저의 약속들 뽑기
         List<AppointmentManager> appointmentRels = appointmentManagerRepository.findAllByUserId(userId);
         List<LastedAppointmentResponseDto>lastedAppointments = new ArrayList<>();
@@ -314,7 +313,7 @@ public class AppointmentService {
                    lastedAppointments.add(LastedAppointmentResponseDto.builder()
                             .id(appointmentRels.get(i).getAppointment().getId())
                             .name(appointmentRels.get(i).getAppointment().getName())
-                            .destination(appointmentRels.get(i).getAppointment().getDestination().getPlaceName())
+                            .destination(DestinationDto.builder().placeName(appointmentRels.get(i).getAppointment().getDestination().getPlaceName()).build())
                             .date(appointmentRels.get(i).getAppointment().getDate().format(formatter))
                             .touchdownList(touchdownList)
                             .build());
