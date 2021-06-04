@@ -12,6 +12,8 @@
  - MySQLDB
  - AWS(EC2,RDS,S3) 
 
+## ERD 
+<img width="695" alt="erd" src="https://user-images.githubusercontent.com/63579113/120812992-7428ff00-c588-11eb-9179-de157338a685.png">
 
  ## API WIKI 
 - [API 문서](https://github.com/Yboyu0u/WhereYouAt_API/wiki)
