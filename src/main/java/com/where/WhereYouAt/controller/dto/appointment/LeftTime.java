@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 public class LeftTime {
 
     private int day;
-    private int hour;
-    private int minute;
 
+    private int hour;
+
+    private int minute;
 }

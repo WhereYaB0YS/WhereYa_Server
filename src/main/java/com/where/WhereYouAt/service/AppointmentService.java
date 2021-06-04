@@ -9,6 +9,7 @@ import com.where.WhereYouAt.domain.dto.Destination;
 import com.where.WhereYouAt.exception.NotExistedAppointmentException;
 import com.where.WhereYouAt.exception.NotExistedPromiseException;
 import com.where.WhereYouAt.exception.NotExistedUserIdException;
+import com.where.WhereYouAt.exception.NotPossibleDateException;
 import com.where.WhereYouAt.repository.AppointmentManagerRepository;
 import com.where.WhereYouAt.repository.AppointmentRepository;
 import com.where.WhereYouAt.repository.UserRepository;
@@ -16,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -41,6 +41,8 @@ public class AppointmentService {
     DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
     DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("a h:mm");
 
+    ZonedDateTime zNow = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+    LocalDateTime now = zNow.withZoneSameInstant(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 
     // 약속추가
     public void addAppointment(Long userId, AppointmentRequestDto dto) {
@@ -49,6 +51,10 @@ public class AppointmentService {
                 .orElseThrow(NotExistedUserIdException::new);
 
         //TODO: 지난 날짜 들어오면 error
+        LocalDate current = LocalDate.of(now.getYear(),now.getMonth(),now.getDayOfMonth());
+        if(dto.getDate().isBefore(current)){
+            throw new NotPossibleDateException();
+        }
 
         Appointment appointment = Appointment.builder()
                 .name(dto.getName())
@@ -57,7 +63,6 @@ public class AppointmentService {
                 .date(dto.getDate().atTime(dto.getTime()))
                 .passed(false)
                 .build();
-
         appointmentRepository.save(appointment);
 
         appointmentManagerRepository.save(AppointmentManager.builder()
@@ -137,42 +142,6 @@ public class AppointmentService {
         return list;
     }
 
-
-//
-//    //약속 상세정보 조회
-//    public AppointmentResponseDto getDetailedAppointment(Long userId, Long promiseId) {
-//
-//        AppointmentManager appointmentRel = appointmentManagerRepository.findByUserIdAndAppointmentId(userId,promiseId)
-//                .orElseThrow(NotExistedAppointmentException::new);
-//
-//        Appointment appointment = appointmentRepository.findById(promiseId)
-//                .orElseThrow(NotExistedAppointmentException::new);
-//
-//        List<AppointmentFriendDto> friends = new ArrayList<>();
-//
-//        for(AppointmentManager appointmentRel2: appointment.getAppointmentList()){
-//            User friend = appointmentRel2.getUser();
-//            if(userId != friend.getId()){
-//                friends.add(AppointmentFriendDto.builder()
-//                        .nickname(friend.getNickname())
-//                        .profileImg(friend.getProfileImg())
-//                        .build());
-//            }
-//        }
-//
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a h:mm");
-//
-//
-//        return AppointmentResponseDto.builder()
-//                .id(appointment.getId())
-//                .name(appointment.getName())
-//                .memo(appointment.getMemo())
-//                .date(appointment.getDate().format(formatter))
-//                .destination(appointment.getDestination())
-//                .friends(friends)
-//                .build();
-//    }
-
     //날짜별 약속유무 조회
     public List<LocalDate> getcheckedAppointemnt(Long userId) {
 
@@ -229,9 +198,7 @@ public class AppointmentService {
 
         //TODO: 약속 중 passed가 false인 것만 뽑게 수정
         List<AppointmentManager> appointmentRels = appointmentManagerRepository.findAllByUserId(userId);
-        ZonedDateTime zNow = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
-        LocalDateTime now = zNow.withZoneSameInstant(ZoneId.of("Asia/Seoul")).toLocalDateTime();
-//        LocalDateTime now = LocalDateTime.now();
+
         LocalDateTime current = LocalDateTime.of(now.getYear(),now.getMonth(),now.getDayOfMonth(), now.getHour(), now.getMinute());
         Appointment min = appointmentRels.get(0).getAppointment();
         long minTime = ChronoUnit.MINUTES.between(current,min.getDate()) ;
@@ -280,7 +247,6 @@ public class AppointmentService {
             throw new NotExistedPromiseException();
         }
 
-
         return AppointmentProximateDto.builder()
                 .promise(AppointmentResponseDto2.builder()
                         .id(min.getId())
@@ -321,51 +287,8 @@ public class AppointmentService {
                             .touchdownList(touchdownList)
                             .build());
                 }
-
         }
         return lastedAppointments;
     }
-
-
-//    //곧 다가올 약속 조회
-//    public AppointmentResponseDto getApproachedAppointment(Long userId) {
-//        //TODO: 지난 약속 처리
-//        List<AppointmentManager>appointmentRels = appointmentManagerRepository.findAllByUserId(userId);
-//
-//        LocalDateTime currentTime = LocalDateTime.now();
-//        long minTime = ChronoUnit.HOURS.between(currentTime,appointmentRels.get(0).getAppointment().getDate());
-//        Appointment min = appointmentRels.get(0).getAppointment();
-//
-//        for(int i=1; i<appointmentRels.size(); i++){
-//           if(minTime>ChronoUnit.HOURS.between(currentTime,appointmentRels.get(i).getAppointment().getDate())){
-//               minTime = ChronoUnit.HOURS.between(currentTime,appointmentRels.get(i).getAppointment().getDate());
-//               min = appointmentRels.get(i).getAppointment();
-//            }
-//        }
-//
-//        List<AppointmentFriendDto> friends = new ArrayList<>();
-//
-//        for(AppointmentManager appointmentRel2: min.getAppointmentList()){
-//            User friend = appointmentRel2.getUser();
-//            if(userId != friend.getId()){
-//                friends.add(AppointmentFriendDto.builder()
-//                        .nickname(friend.getNickname())
-//                        .profileImg(friend.getProfileImg())
-//                        .build());
-//            }
-//        }
-//
-//
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a h:mm");
-//
-//        return AppointmentResponseDto.builder()
-//                .id(min.getId())
-//                .name(min.getName())
-//                .memo(min.getMemo())
-//                .destination(min.getDestination())
-//                .date(min.getDate().format(formatter))
-//                .friends(friends)
-//                .build();
-//    }
 }
 

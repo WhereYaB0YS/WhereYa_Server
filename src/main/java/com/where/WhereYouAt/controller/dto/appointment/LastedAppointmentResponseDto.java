@@ -19,5 +19,4 @@ public class LastedAppointmentResponseDto {
     private String date;
 
     private List<Touchdown>touchdownList;
-
 }

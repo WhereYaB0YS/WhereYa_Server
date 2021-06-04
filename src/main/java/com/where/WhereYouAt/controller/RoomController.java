@@ -23,14 +23,11 @@ public class RoomController {
 //    public RoomController(SimpMessagingTemplate template) {
 //        this.template = template;
 //    }
-
     @RequestMapping("/room")
     public ModelAndView room() throws Exception{
         ModelAndView mv = new ModelAndView("room");
         return mv;
     }
-
-
     //서버 입장에서 /send로 받고 /topic/receive로 받는다
 //    @MessageMapping("/send") //이걸로 보내고
 //    @SendTo("/topic/room")  //요거로 받는다

@@ -69,6 +69,12 @@ public class GlobalExceptionHandler {
         return ErrorResponse.of(HttpStatus.BAD_REQUEST,ex.getMessage());
     }
 
+    @ExceptionHandler( NotPossibleDateException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleNotPossibleDateException(NotPossibleDateException ex){
+        return ErrorResponse.of(HttpStatus.BAD_REQUEST,ex.getMessage());
+    }
+
     @ExceptionHandler(NotExistedPromiseException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleNotNotExistedPromiseException(NotExistedPromiseException ex){

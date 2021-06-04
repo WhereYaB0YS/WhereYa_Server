@@ -18,5 +18,4 @@ public class AppointmentProximateDto {
 
     @JsonProperty("lefttime")
     private LeftTime leftTime;
-
 }

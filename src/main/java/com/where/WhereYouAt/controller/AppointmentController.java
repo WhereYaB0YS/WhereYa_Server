@@ -33,17 +33,6 @@ public class AppointmentController {
 
         return ResponseEntity.ok(new ResponseMessage(HttpStatus.CREATED,"ok"));
     }
-//    //약속 상세정보 조회
-//    @GetMapping("/{promiseId}")
-//    public ResponseEntity<AppointmentResponseDto> getDetailedAppointment(Authentication authentication, @PathVariable Long promiseId){
-//
-//        Claims claims = (Claims) authentication.getPrincipal();
-//        Long userId = claims.get("userId",Long.class);
-//
-//        AppointmentResponseDto dto = appointmentService.getDetailedAppointment(userId,promiseId);
-//
-//        return  ResponseEntity.ok(dto);
-//    }
 
     //날짜별 약속유무 조회
     @GetMapping("/checkDate")
@@ -55,7 +44,6 @@ public class AppointmentController {
                 .datesWithEvent(appointmentService.getcheckedAppointemnt(userId))
                 .build());
     }
-
 
     //날짜별로 약속목록 조회
     @GetMapping("/date/{date}")
@@ -103,7 +91,6 @@ public class AppointmentController {
 
         return ResponseEntity.ok(AppointmentListResponseDto.builder().promiseList(appointmentService.getLastedAppointments(userId)).build());
     }
-
 
     //약속수정
     @PatchMapping("/{promiseId}")

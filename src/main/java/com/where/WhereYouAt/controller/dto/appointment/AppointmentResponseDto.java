@@ -22,6 +22,4 @@ public class AppointmentResponseDto {
     private String date;
 
     private List<String> friends;
-
-
 }

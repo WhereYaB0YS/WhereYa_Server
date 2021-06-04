@@ -9,5 +9,4 @@ public class AppointmentFriendDto {
 
     private String nickname;
     private String profileImg;
-
 }

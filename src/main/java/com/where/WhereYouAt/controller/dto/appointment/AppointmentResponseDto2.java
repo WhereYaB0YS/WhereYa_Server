@@ -22,5 +22,4 @@ public class AppointmentResponseDto2 {
     private String time;
 
     private List<String> friends;
-
 }

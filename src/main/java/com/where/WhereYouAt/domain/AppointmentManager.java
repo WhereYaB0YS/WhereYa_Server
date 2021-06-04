@@ -3,7 +3,6 @@ package com.where.WhereYouAt.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -32,6 +31,4 @@ public class AppointmentManager {
     @NotNull
     @ColumnDefault("false")
     private Boolean touchdown;
-
-
 }

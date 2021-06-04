@@ -11,5 +11,4 @@ import java.util.List;
 public class AppointmentcheckDateDto {
 
     private List<LocalDate> datesWithEvent;
-
 }

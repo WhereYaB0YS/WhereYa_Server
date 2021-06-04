@@ -8,9 +8,7 @@ import lombok.Data;
 @Builder
 public class Touchdown {
 
-    @JsonProperty("user_nickname")
     private String nickname;
 
     private Boolean check;
-
 }
