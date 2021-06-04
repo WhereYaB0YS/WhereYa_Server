@@ -2,8 +2,6 @@ package com.where.WhereYouAt.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.where.WhereYouAt.vo.RoomMessage;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;

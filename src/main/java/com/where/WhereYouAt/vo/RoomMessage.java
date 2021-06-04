@@ -7,7 +7,7 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RoomMessage {
     private Long roomId;
-    private MessageType type;
+    //private MessageType type;
     private String name;
     private String x;
     private String y;

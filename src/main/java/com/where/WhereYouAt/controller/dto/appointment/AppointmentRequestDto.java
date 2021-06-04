@@ -24,15 +24,11 @@ public class AppointmentRequestDto {
 
     private String memo;
 
-    @NotNull
     private LocalDate date;
 
-    @NotNull
     private LocalTime time;
 
-
     private DestinationDto destination;
-
 
     private List<String> friends;
 }

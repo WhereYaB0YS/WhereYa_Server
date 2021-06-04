@@ -48,6 +48,8 @@ public class AppointmentService {
         User user = userRepository.findById(userId)
                 .orElseThrow(NotExistedUserIdException::new);
 
+        //TODO: 지난 날짜 들어오면 error
+
         Appointment appointment = Appointment.builder()
                 .name(dto.getName())
                 .memo(dto.getMemo())
@@ -61,6 +63,7 @@ public class AppointmentService {
         appointmentManagerRepository.save(AppointmentManager.builder()
                 .user(user)
                 .appointment(appointment)
+                .touchdown(false)
                 .build());
 
         if(dto.getFriends()!=null) {
