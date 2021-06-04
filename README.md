@@ -25,26 +25,35 @@
 ## Dependency
 ```
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    compile 'org.springframework.boot:spring-boot-starter-jdbc'
-    compile 'mysql:mysql-connector-java'
-    implementation 'org.projectlombok:lombok:1.18.16'
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
-    runtime 'io.jsonwebtoken:jjwt-impl:0.11.2'
-    runtime 'io.jsonwebtoken:jjwt-jackson:0.11.2'
-    compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.junit.platform:junit-platform-launcher:1.5.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.5.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter'
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.springframework.boot:spring-boot-starter-web-services'
+ implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+	implementation 'com.h2database:h2'
+	compile 'org.springframework.boot:spring-boot-starter-jdbc'
+	compile('javax.servlet:jstl')
+	compile 'mysql:mysql-connector-java'
+	compile('org.webjars.bower:jquery:3.3.1')
+	compile('org.webjars:sockjs-client:1.1.2')
+	compile('org.webjars:webjars-locator:0.30')
+	implementation 'org.projectlombok:lombok:1.18.16'
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+	runtime 'io.jsonwebtoken:jjwt-impl:0.11.2'
+	runtime 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.junit.platform:junit-platform-launcher:1.5.0'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.0'
+	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.5.0'
+	testImplementation 'org.mockito:mockito-junit-jupiter'
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
 }
+
 ```
