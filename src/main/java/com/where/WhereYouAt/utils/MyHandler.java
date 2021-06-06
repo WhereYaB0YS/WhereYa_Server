@@ -30,7 +30,8 @@ public class MyHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
         RoomMessage roomMessage = objectMapper.readValue(payload,RoomMessage.class);
-        System.out.println(objectMapper.writeValueAsString(roomMessage));
+       // System.out.println(objectMapper.writeValueAsString(roomMessage));
+        System.out.println(roomMessage.getName());
         for(WebSocketSession sess: sessions){
             sess.sendMessage(new TextMessage(objectMapper.writeValueAsString(roomMessage)));
         }

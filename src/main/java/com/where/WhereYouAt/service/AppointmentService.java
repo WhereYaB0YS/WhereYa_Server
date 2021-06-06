@@ -21,6 +21,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -43,6 +44,7 @@ public class AppointmentService {
 
     ZonedDateTime zNow = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
     LocalDateTime now = zNow.withZoneSameInstant(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+    LocalDateTime current = LocalDateTime.of(now.getYear(),now.getMonth(),now.getDayOfMonth(), now.getHour(), now.getMinute());
 
     // 약속추가
     public void addAppointment(Long userId, AppointmentRequestDto dto) {
@@ -50,12 +52,9 @@ public class AppointmentService {
         User user = userRepository.findById(userId)
                 .orElseThrow(NotExistedUserIdException::new);
 
-        //TODO: 지난 날짜 들어오면 error
-        LocalDate current = LocalDate.of(now.getYear(),now.getMonth(),now.getDayOfMonth());
-        if(dto.getDate().isBefore(current)){
+        if(dto.getDate().atTime(dto.getTime()).isBefore(current)){
             throw new NotPossibleDateException();
         }
-
         Appointment appointment = Appointment.builder()
                 .name(dto.getName())
                 .memo(dto.getMemo())
@@ -109,7 +108,6 @@ public class AppointmentService {
                 .orElseThrow(NotExistedAppointmentException::new);
 
         appointmentManagerRepository.delete(appointmentRel);
-
     }
 
     //약속목록 조회
@@ -199,7 +197,6 @@ public class AppointmentService {
         //TODO: 약속 중 passed가 false인 것만 뽑게 수정
         List<AppointmentManager> appointmentRels = appointmentManagerRepository.findAllByUserId(userId);
 
-        LocalDateTime current = LocalDateTime.of(now.getYear(),now.getMonth(),now.getDayOfMonth(), now.getHour(), now.getMinute());
         Appointment min = appointmentRels.get(0).getAppointment();
         long minTime = ChronoUnit.MINUTES.between(current,min.getDate()) ;
 
@@ -278,7 +275,6 @@ public class AppointmentService {
                                 .check(appointmentManagers.get(j).getTouchdown())
                                 .build());
                     }
-
                    lastedAppointments.add(LastedAppointmentResponseDto.builder()
                             .id(appointmentRels.get(i).getAppointment().getId())
                             .name(appointmentRels.get(i).getAppointment().getName())
@@ -288,6 +284,24 @@ public class AppointmentService {
                             .build());
                 }
         }
+
+        //최신 순 정렬 
+        lastedAppointments.sort(new Comparator<LastedAppointmentResponseDto>() {
+            @Override
+            public int compare(LastedAppointmentResponseDto o1, LastedAppointmentResponseDto o2) {
+                LocalDateTime l0 = LocalDateTime.parse(o1.getDate(),formatter);
+                LocalDateTime l1 = LocalDateTime.parse(o2.getDate(),formatter);
+
+                if(l0.isBefore(l1)){
+                    return 1;
+                }else if(!l0.isBefore(l1)){
+                    return -1;
+                }else{
+                    return 0;
+                }
+            }
+        });
+
         return lastedAppointments;
     }
 }
