@@ -3,11 +3,13 @@ package com.where.WhereYouAt.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.where.WhereYouAt.vo.RoomMessage;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,11 +31,13 @@ public class MyHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
+        System.out.println(payload);
         RoomMessage roomMessage = objectMapper.readValue(payload,RoomMessage.class);
+
        // System.out.println(objectMapper.writeValueAsString(roomMessage));
         System.out.println(roomMessage.getName());
         for(WebSocketSession sess: sessions){
-            sess.sendMessage(new TextMessage(objectMapper.writeValueAsString(roomMessage)));
+            sess.sendMessage(new BinaryMessage(objectMapper.writeValueAsString(roomMessage).getBytes()));
         }
     }
 

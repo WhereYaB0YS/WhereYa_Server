@@ -196,22 +196,32 @@ public class AppointmentService {
 
         //TODO: 약속 중 passed가 false인 것만 뽑게 수정
         List<AppointmentManager> appointmentRels = appointmentManagerRepository.findAllByUserId(userId);
-
-        Appointment min = appointmentRels.get(0).getAppointment();
-        long minTime = ChronoUnit.MINUTES.between(current,min.getDate()) ;
-
+        List<AppointmentManager> appointmentRelsPassedF = new ArrayList<>();
+        Appointment min = new Appointment();
+        long minTime = 0;
         LeftTime leftTime = new LeftTime(0,0,0);
 
+        LocalDateTime t = LocalDateTime.of(2021,5,27,19,30);
+        System.out.println(t.isBefore(current));
+
         //곧 다가올 약속 뽑아내기
-        for(int i=1; i<appointmentRels.size(); i++) {
+        for(int i=0; i<appointmentRels.size(); i++) {
+
             if (appointmentRels.get(i).getAppointment().getDate().isBefore(current)) {
                 appointmentRels.get(i).getAppointment().setPassed(true); // 지난 날짜 처리.
+            }else{
+                appointmentRelsPassedF.add(appointmentRels.get(i));
             }
+        }
+
+        min = appointmentRelsPassedF.get(0).getAppointment();
+        minTime = ChronoUnit.MINUTES.between(current,min.getDate()) ;
 
             //지나지 않은 가장 최신 약속 뽑기
-            if (!appointmentRels.get(i).getAppointment().getPassed() && minTime > ChronoUnit.MINUTES.between(current, appointmentRels.get(i).getAppointment().getDate())) {
-                minTime = ChronoUnit.MINUTES.between(current, appointmentRels.get(i).getAppointment().getDate());
-                min = appointmentRels.get(i).getAppointment();
+        for(int i=0; i<appointmentRelsPassedF.size(); i++) {
+            if (!appointmentRelsPassedF.get(i).getAppointment().getPassed() && minTime > ChronoUnit.MINUTES.between(current, appointmentRelsPassedF.get(i).getAppointment().getDate())) {
+                minTime = ChronoUnit.MINUTES.between(current, appointmentRelsPassedF.get(i).getAppointment().getDate());
+                min = appointmentRelsPassedF.get(i).getAppointment();
             }
         }
 
@@ -285,7 +295,7 @@ public class AppointmentService {
                 }
         }
 
-        //최신 순 정렬 
+        //최신 순 정렬
         lastedAppointments.sort(new Comparator<LastedAppointmentResponseDto>() {
             @Override
             public int compare(LastedAppointmentResponseDto o1, LastedAppointmentResponseDto o2) {
