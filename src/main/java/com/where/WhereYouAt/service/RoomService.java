@@ -1,6 +1,10 @@
 package com.where.WhereYouAt.service;
 
+import com.where.WhereYouAt.domain.Appointment;
+import com.where.WhereYouAt.exception.NotExistedAppointmentException;
+import com.where.WhereYouAt.repository.AppointmentRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,7 +12,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Slf4j
 public class RoomService {
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
-    //TODO: 약속 방 id로 약속방 찾고 nickname으로 aptManager의 유 touchdown저 check.
+    public void checkTouchdown(Long roomId, String name) {
+        Appointment appointment = appointmentRepository.findById(roomId)
+                .orElseThrow(NotExistedAppointmentException::new);
+        for(int i=0; i<appointment.getAppointmentList().size();i++) {
+            if (appointment.getAppointmentList().get(i).getUser().getNickname().equals(name)) {
+                appointment.getAppointmentList().get(i).setTouchdown(true);
+            }
+        }
+    }
 
 }

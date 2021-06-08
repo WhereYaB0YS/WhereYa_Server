@@ -1,7 +1,9 @@
 package com.where.WhereYouAt.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.where.WhereYouAt.service.RoomService;
 import com.where.WhereYouAt.vo.RoomMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.CloseStatus;
@@ -18,8 +20,11 @@ import java.util.List;
 public class MyHandler extends TextWebSocketHandler {
 
     private List<WebSocketSession> sessions = new ArrayList<>();
-
     private ObjectMapper objectMapper=new ObjectMapper();
+
+    @Autowired
+    private RoomService roomService;
+
     //클라이언트가 서버에 접속이 성공했을 때
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -33,11 +38,13 @@ public class MyHandler extends TextWebSocketHandler {
         String payload = message.getPayload();
         System.out.println(payload);
         RoomMessage roomMessage = objectMapper.readValue(payload,RoomMessage.class);
-
-       // System.out.println(objectMapper.writeValueAsString(roomMessage));
         System.out.println(roomMessage.getName());
         for(WebSocketSession sess: sessions){
             sess.sendMessage(new BinaryMessage(objectMapper.writeValueAsString(roomMessage).getBytes()));
+        }
+
+        if(roomMessage.isTouchdown()){
+            roomService.checkTouchdown(roomMessage.getRoomId(),roomMessage.getName());
         }
     }
 

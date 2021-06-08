@@ -42,8 +42,6 @@ public class AppointmentService {
     DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
     DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("a h:mm");
 
-
-
     // 약속추가
     public void addAppointment(Long userId, AppointmentRequestDto dto) {
 
