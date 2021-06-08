@@ -42,12 +42,14 @@ public class AppointmentService {
     DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
     DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("a h:mm");
 
-    ZonedDateTime zNow = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
-    LocalDateTime now = zNow.withZoneSameInstant(ZoneId.of("Asia/Seoul")).toLocalDateTime();
-    LocalDateTime current = LocalDateTime.of(now.getYear(),now.getMonth(),now.getDayOfMonth(), now.getHour(), now.getMinute());
+
 
     // 약속추가
     public void addAppointment(Long userId, AppointmentRequestDto dto) {
+
+        ZonedDateTime zNow = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        LocalDateTime now = zNow.withZoneSameInstant(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+        LocalDateTime current = LocalDateTime.of(now.getYear(),now.getMonth(),now.getDayOfMonth(), now.getHour(), now.getMinute());
 
         User user = userRepository.findById(userId)
                 .orElseThrow(NotExistedUserIdException::new);
@@ -200,9 +202,13 @@ public class AppointmentService {
         Appointment min = new Appointment();
         long minTime = 0;
         LeftTime leftTime = new LeftTime(0,0,0);
+//
+//        LocalDateTime t = LocalDateTime.of(2021,5,27,19,30);
+//        System.out.println(t.isBefore(current));
 
-        LocalDateTime t = LocalDateTime.of(2021,5,27,19,30);
-        System.out.println(t.isBefore(current));
+        ZonedDateTime zNow = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        LocalDateTime now = zNow.withZoneSameInstant(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+        LocalDateTime current = LocalDateTime.of(now.getYear(),now.getMonth(),now.getDayOfMonth(), now.getHour(), now.getMinute());
 
         //곧 다가올 약속 뽑아내기
         for(int i=0; i<appointmentRels.size(); i++) {
@@ -231,6 +237,9 @@ public class AppointmentService {
                 friends.add(appointmentManager.getUser().getNickname());
             }
         }
+
+        System.out.println(minTime);
+
 
         if(minTime>1440){ //하루 이상 남았을
             minTime = ChronoUnit.DAYS.between(current,min.getDate());

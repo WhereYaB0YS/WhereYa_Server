@@ -16,7 +16,7 @@ public interface AppointmentManagerRepository extends JpaRepository<AppointmentM
     Optional<AppointmentManager> findByUserIdAndAppointmentId(Long userId, Long appointmentId);
 
     //현재 날짜 이전의 약속들만 뽑아내기
-//    @Query(value = "SELECT * FROM AppointmentManager a WHERE a.userId = :userId and passed=")
+//    @Query(value = "SELECT * FROM AppointmentManager a WHERE a.user = :user and passed=")
 //    List<AppointmentManager> findLastedAppointments(@Param("userId") Long userId);
 
 
