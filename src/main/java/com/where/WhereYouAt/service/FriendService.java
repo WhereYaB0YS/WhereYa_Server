@@ -45,6 +45,7 @@ public class FriendService {
 
         Friend friendRelation = Friend.builder()
                 .user(user)
+                .star(false)
                 .userId1(friend.getId())
                 .build();
 
@@ -102,10 +103,11 @@ public class FriendService {
 
         if(friendRel.isStar()==true){
             friendRel.setStar(false);
-            return "해당 친구가 즐겨찾기목록에 추가되었습니디";
+            return "해당 친구가 즐겨찾기목록에서 제외되었습니다";
+
         }else{
             friendRel.setStar(true);
-            return "해당 친구가 즐겨찾기목록에서 제외되었습니다";
+            return "해당 친구가 즐겨찾기목록에 추가되었습니다";
         }
     }
 
