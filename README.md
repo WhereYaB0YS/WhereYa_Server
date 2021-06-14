@@ -19,8 +19,8 @@
  ## API WIKI 
 - [API 문서](https://github.com/Yboyu0u/WhereYouAt_API/wiki)
 
-
-<!-- ![임시 ERD](./img/ERD.png) -->
+## Service Architecture 
+![image](https://user-images.githubusercontent.com/63579113/121895281-01bfd800-cd5b-11eb-8501-6ce0a479f47a.png)
 
 ## Dependency
 ```
