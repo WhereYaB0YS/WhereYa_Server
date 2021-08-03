@@ -30,7 +30,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.springframework.boot:spring-boot-starter-web-services'
- implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+ 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
 	implementation 'com.h2database:h2'
 	compile 'org.springframework.boot:spring-boot-starter-jdbc'
